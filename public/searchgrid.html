@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>telerik</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common-material.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.mobile.all.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.material.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.3.913/js/angular.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.3.913/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.3.913/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+    <input type="button" class="k-button" onclick="nextPage()" value="next" />
+    <div id="grid"></div>
+    <script>
+        function nextPage() {
+            var grid = $("#grid").data("kendoGrid");
+            localStorage.setItem("employeesState", JSON.stringify(grid.getOptions()))
+            window.location.href = "/page1.html"
+        }
+
+
+
+        var products = new kendo.data.DataSource({
+            schema: {
+                model: {
+                    id: "ProductID",
+                    fields: {
+                        ProductName: {
+                            type: "string"
+                        }
+                    }
+                }
+            },
+            transport: {
+                read: {
+                    url: "//demos.telerik.com/kendo-ui/service/products",
+                    dataType: "jsonp"
+                }
+            }
+        });
+
+
+
+        $(document).ready(function() {
+
+            var grid = $("#grid").kendoGrid({
+                dataSource: products,
+                columns: [{
+                    field: "ProductName",
+                    title: "Product Name",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    }
+                }],
+                autoBind: false,
+                filterable: {
+                    mode: "row"
+                }
+            });
+
+            var state = JSON.parse(localStorage.getItem("employeesState"))
+
+            if (state) {
+                kendo.alert("is state")
+                console.log(state)
+                for (var i = 0; i < state.columns.length; i++) {
+                    state.columns[i].filterable.cell['template'] = customSearch
+                    console.log(state.columns[i].filterable)
+                }
+                console.log(state)
+                var grid = $("#grid").data("kendoGrid");
+                grid.setOptions(state);
+            }
+
+
+        });
+
+
+
+        function customSearch(args) {
+            args.element.css("width", "90%").addClass("k-textbox").keydown(function(e) {
+                setTimeout(function() {
+                    $(e.target).trigger("change");
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
