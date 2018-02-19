@@ -1,5 +1,35 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WebPackalackin</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+    src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2018.1.117/styles/kendo.common.min.css" />
+</head>
+<body>
+
+    <h1>day I'm bundling...</h1>
+    <input id="datePicker" />
+    <script src="Built/main.bundle.js"></script>
+    <script src=" http://kendo.cdn.telerik.com/2018.1.117/js/kendo.all.min.js"></script>
+</body>
+</html> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
+<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2018.1.117/styles/kendo.common.min.css" />
+<script src=" http://kendo.cdn.telerik.com/2018.1.117/js/kendo.all.min.js"></script>
 <style>
-    .k-grid td:first-child, .k-grid .k-header tr th:first-child {
+    .k-grid td:first-child,
+    .k-grid .k-header tr th:first-child {
         text-align: left;
     }
 
@@ -7,7 +37,7 @@
         padding: 0;
     }
 </style>
-<script src="~/Scripts/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
 <div class="row">
     <div class="row">
         <div class="col-lg-6">
@@ -19,42 +49,23 @@
 
     <div class="row">
         <div class="col-lg-12 scbam-content">
-            @*<div class="col-lg-6">
-                    <div style="margin-top: 0%; margin-left:-14px">
-                        <span>Search by : </span>
-                        <input type="radio" name="typeSearch" id="Batch_No" class="k-radio" value="byBatch" checked="checked">
-                        <label class="k-radio-label" for="Batch_No">Batch No</label>
-                        <input type="radio" name="typeSearch" id="other" class="k-radio" value="oth">
-                        <label class="k-radio-label" for="other">Other</label>
-                    </div>
-                </div>*@
+
             <span id="popupNotification"></span>
             <form id="paymentDetailForm" class="form-horizontal form-widgets">
 
 
                 <div id="detailForm">
 
-                    @*<div class="form-group">
-                            <div class="col-md-6 col-lg-6">
-                                <div><label for="Custodian_Code">Custodian Code</label></div>
-                                <input id='Custodian_Code' required style="width: 100%" />
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div><label for="Fund_Code_Grp">Fund Code</label></div>
-                                <select id="Fund_Code_Grp" multiple="multiple"></select>
-                            </div>
-                        </div>*@
 
                     <div class="form-group ">
                         <div class="col-md-6 col-lg-6">
-                            <div><label for="Expense_Code_Grp">Expense Code </label></div>
+                            <div>
+                                <label for="Expense_Code_Grp">Expense Code </label>
+                            </div>
                             <input id="Expense_Code_Grp" style="width: 50%;" />
 
                         </div>
-                        @*<div class="col-md-6 col-lg-6">
-                                <div><label for="Payee_Code_Grp">Payee Code </label></div>
-                                <select id="Payee_Code_Grp" multiple="multiple"></select>
-                            </div>*@
+
                     </div>
 
                     <div class="form-group ">
@@ -62,11 +73,15 @@
                             <h3>Trade Date</h3>
                             <div class="form-group ">
                                 <div class="col-md-6 col-lg-4">
-                                    <div><label for="TradeStrDate">Start Date </label></div>
+                                    <div>
+                                        <label for="TradeStrDate">Start Date </label>
+                                    </div>
                                     <input id='TradeStrDate' maxlength="100" style="width:100%" />
                                 </div>
                                 <div class="col-md-6 col-lg-4">
-                                    <div><label for="TradeEndDate">End Date </label></div>
+                                    <div>
+                                        <label for="TradeEndDate">End Date </label>
+                                    </div>
                                     <input id='TradeEndDate' maxlength="100" style="width:100%" />
                                 </div>
                             </div>
@@ -75,11 +90,15 @@
                             <h3>Settle Date</h3>
                             <div class="form-group ">
                                 <div class="col-md-6 col-lg-4">
-                                    <div><label for="SettleStrDate">Start Date </label></div>
+                                    <div>
+                                        <label for="SettleStrDate">Start Date </label>
+                                    </div>
                                     <input id='SettleStrDate' maxlength="15" style="width:100%" />
                                 </div>
                                 <div class="col-md-6 col-lg-4">
-                                    <div><label for="SettleEndDate">End Date </label></div>
+                                    <div>
+                                        <label for="SettleEndDate">End Date </label>
+                                    </div>
                                     <input id="SettleEndDate" maxlength="15" style="width:100%" />
                                 </div>
                             </div>
@@ -88,158 +107,11 @@
                 </div>
 
             </form>
-            <div>
-                <div id="loading" style="display:none; text-align:center;">
-                    <div class="loader loader--style3" title="Loading">
-                        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                             width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                        <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                        <animateTransform attributeType="xml"
-                                          attributeName="transform"
-                                          type="rotate"
-                                          from="0 25 25"
-                                          to="360 25 25"
-                                          dur="0.6s"
-                                          repeatCount="indefinite" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        </path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
             <button class="btn col-lg-1 btn-primary" id='search' type="submit">Search</button>
 
         </div>
 
-        @*<div class="row">
-                <div id="gridPaymentTransaction"></div>
-            </div>*@
     </div>
 
     <div class="row">
@@ -250,13 +122,9 @@
 
                 <button class="btn maker col-lg-1 " id='import'>IMPORT</button>
                 <button class="btn maker col-lg-1 " id='import-merge' style="margin-left:1%">IMPORT MERGE</button>
-                @*<button class="btn col-lg-1 " id='back' onclick="back()" style="margin-left:1% ; display:none; ">BACK</button>*@
             </div>
 
-            @*<div class="col-lg-12" style="margin-top:1%">
-                    <button class="btn checker col-lg-1 k-primary" id='approve'>APPROVE</button>
-                    <button class="btn checker col-lg-1 " id='reject' style="margin-left:1%">REJECT</button>
-                </div>*@
+
         </div>
     </div>
 
@@ -271,240 +139,37 @@
     var dataItemAll = 'N'
     var lastpage = 1;
 
-    kendoWidget()
-    tradeDatePickerView()
-    settleDatePickerView()
-    //////////$.ajax(checkAutorizePage()).done(function () {
-
-    //////////    if (checkCookie() !== true) {
-    //////////        window.location.href = '/'
-    //////////    }
-    //////////    validateDatePicker("#paymentDetailForm");
-    //////////    if (getCookie('previousUrl') != 'PMS' && getCookie('previousUrl') != 'PTD') {
-    //////////        //alert(getCookie('previousUrl'))
-    //////////        localStorage.removeItem('dataSearch')
-    //////////        localStorage.removeItem('kendo-grid-paymenttransaction-options')
-    //////////        $.cookie("previousUrl", 'PMS', { path: "/" });
-    //////////    } else {
-    //////////        $.cookie("previousUrl", 'PMS', { path: "/" });
-    //////////        //if (localStorage.getItem("dataSearch")) {
-    //////////        //    data = JSON.parse(localStorage.getItem("dataSearch"))
-    //////////        //    $('#detailForm').hide();
-    //////////        //    $('#batchForm').hide();
-    //////////        //    $('#loading').show();
-    //////////        //    actionSearch(data)
-    //////////        //}
-
-    //////////    }
-    //////////    console.log("authorizePMgt : " + authorizePMgt);
-    //////////    console.log("authorizeOper : " + authorizePOper);
-
-    //////////    $(".container").css("width", "96%")
-    //////////    kendoWidget()
-    //////////    tradeDatePickerView()
-    //////////    settleDatePickerView()
-
-
-    //////////    $(".displayGrid").hide()
-    //////////    //settingView($("input[name=typeSearch]").val())
-
-    //////////})
-
-
-    function kendoWidget() {
-
-
-
-        $("#Expense_Code_Grp").kendoDropDownList({
-            placeholder: "Select ...",
-            filter: "contains",
-            dataSource: {
-                transport: {
-                    read: {
-                        url: url + "/mastervalue?mastervaluekey=EXPIMP",
-                        dataType: "json",
-                        type: "GET"
-                    }
-                },
-                schema: {
-                    data: function (response) {
-                        // console.log(response.data.MasterValue)
-                        for (var i = 0; i < response.data.MasterValue.length; i++) {
-
-                            response.data.MasterValue[i].Exp_Name_Txt_name = response.data.MasterValue[i].ValueKey + "  " + response.data.MasterValue[i].ValueNameTh
-                        }
-                        // console.log(response.data.MasterValue)
-                        return response.data.MasterValue;
-                    }
-                },
-                //serverFiltering: true
-            },
-            dataValueField: "ValueKey",
-            dataTextField: "Exp_Name_Txt_name",
-            autoBind: false,
-            autoWidth: true,
-            optionLabel: "Select a Expense..."
-
-        })
-
-    }
-
-    function tradeDatePickerView() {
-
-        function startChange() {
-
-            var startDate = tradeStart.value(),
-                endDate = tradeEnd.value();
-
-            if (startDate) {
-                startDate = new Date(startDate);
-                startDate.setDate(startDate.getDate());
-                tradeEnd.min(startDate);
-            } else if (endDate) {
-                tradeStart.max(new Date(endDate));
-            } else {
-                endDate = new Date();
-                tradeStart.max(endDate);
-                tradeEnd.min(endDate);
-            }
-
-
-
-        }
-
-        function endChange() {
-
-
-            var endDate = tradeEnd.value(),
-                startDate = tradeStart.value();
-
-
-            if (endDate) {
-                endDate = new Date(endDate);
-                endDate.setDate(endDate.getDate());
-                tradeStart.max(endDate);
-            } else if (startDate) {
-                end.min(new Date(startDate));
-            } else {
-                //    disablegrid(false)
-                endDate = new Date();
-                tradeStart.max(endDate);
-                tradeEnd.min(endDate);
-            }
-
-
-
-        }
-
-        //Maake input DatePicker Field
-        var tradeStart = $("#TradeStrDate").kendoDatePicker({
-            format: "dd/MM/yyyy",
-            parseFormats: ["dd/MM/yyyy"],
-            change: startChange
-        }).data("kendoDatePicker");
-
-        var tradeEnd = $("#TradeEndDate").kendoDatePicker({
-            format: "dd/MM/yyyy",
-            change: endChange
-        }).data("kendoDatePicker");
-
-        // setting max/min datepicker
-        tradeStart.max(tradeEnd.value());
-        tradeEnd.min(tradeStart.value());
-    }
-
-    function settleDatePickerView() {
-
-        function startChange() {
-
-            var startDate = settleStart.value(),
-                endDate = settleEnd.value();
-
-            if (startDate) {
-                startDate = new Date(startDate);
-                startDate.setDate(startDate.getDate());
-                settleEnd.min(startDate);
-            } else if (endDate) {
-                settleStart.max(new Date(endDate));
-            } else {
-                endDate = new Date();
-                settleStart.max(endDate);
-                settleEnd.min(endDate);
-            }
-
-
-
-        }
-
-        function endChange() {
-
-
-            var endDate = settleEnd.value(),
-                startDate = settleStart.value();
-
-
-            if (endDate) {
-                endDate = new Date(endDate);
-                endDate.setDate(endDate.getDate());
-                settleStart.max(endDate);
-            } else if (startDate) {
-                end.min(new Date(startDate));
-            } else {
-                //    disablegrid(false)
-                endDate = new Date();
-                tradeStart.max(endDate);
-                settleEnd.min(endDate);
-            }
-
-
-
-        }
-
-        //Maake input DatePicker Field
-        var settleStart = $("#SettleStrDate").kendoDatePicker({
-            format: "dd/MM/yyyy",
-            parseFormats: ["dd/MM/yyyy"],
-            change: startChange
-        }).data("kendoDatePicker");
-
-        var settleEnd = $("#SettleEndDate").kendoDatePicker({
-            format: "dd/MM/yyyy",
-            change: endChange
-        }).data("kendoDatePicker");
-
-        // setting max/min datepicker
-        settleStart.max(settleEnd.value());
-        settleEnd.min(settleStart.value());
-    }
-
+    // kendoWidget()
+    // tradeDatePickerView()
+    // settleDatePickerView()
 
 
     $("#search").click(function () {
+        resultDetailGrid()
+        // var linkService = url + '/ImpETSData'
+        // $.post(linkService, {
 
-        var linkService = url + '/ImpETSData'
-        $.post(linkService, {
+        //     UserName: localStorage.getItem("userID"),
+        //     AppTokenId: getCookie("tokenAppId"),
+        //     ExpCode: $("#Expense_Code_Grp").data("kendoDropDownList").value(), //EXP-00014
+        //     ReqData: "",
+        //     SettleStr: moment($("#SettleStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+        //     SettleEnd: moment($("#SettleEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00,
+        //     TradeStr: moment($("#TradeStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+        //     TradeEnd: moment($("#TradeEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+        //     TypeOfData: "SCH"
 
-            UserName: localStorage.getItem("userID"),
-            AppTokenId: getCookie("tokenAppId"),
-            ExpCode: $("#Expense_Code_Grp").data("kendoDropDownList").value(), //EXP-00014
-            ReqData: "",
-            SettleStr: moment($("#SettleStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
-            SettleEnd: moment($("#SettleEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00,
-            TradeStr: moment($("#TradeStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
-            TradeEnd: moment($("#TradeEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
-            TypeOfData: "SCH"
+        // }, function getResult(response) {
+        //     console.log(response)
+        //     if (response.status.code == '200') {
+        //         dataSourceResultSearch = response.data;
 
-        }, function getResult(response) {
-            console.log(response)
-            if (response.status.code == '200') {
-                dataSourceResultSearch = response.data;
+        //         resultDetailGrid(dataSourceResultSearch)
+        //     } else {
+        //         // error status != 200
+        //     }
 
-                resultDetailGrid(dataSourceResultSearch)
-            } else {
-                // error status != 200
-            }
-
-        })
+        // })
     })
 
 
@@ -513,17 +178,7 @@
         console.log("dataSource : ", dataSource)
         dataSource = [{
             ActImp: true
-        },
-        {
-            ActImp: false
         }, {
-            ActImp: false
-        }, {
-            ActImp: true
-        }, {
-            ActImp: false
-        },
-        {
             ActImp: false
         }, {
             ActImp: false
@@ -531,17 +186,7 @@
             ActImp: true
         }, {
             ActImp: false
-        },
-        {
-            ActImp: false
         }, {
-            ActImp: false
-        }, {
-            ActImp: true
-        }, {
-            ActImp: false
-        },
-        {
             ActImp: false
         }, {
             ActImp: false
@@ -549,17 +194,7 @@
             ActImp: true
         }, {
             ActImp: false
-        },
-        {
-            ActImp: false
         }, {
-            ActImp: false
-        }, {
-            ActImp: true
-        }, {
-            ActImp: false
-        },
-        {
             ActImp: false
         }, {
             ActImp: false
@@ -567,8 +202,7 @@
             ActImp: true
         }, {
             ActImp: false
-        },
-        {
+        }, {
             ActImp: false
         }, {
             ActImp: false
@@ -576,8 +210,31 @@
             ActImp: true
         }, {
             ActImp: false
-        },
-        {
+        }, {
+            ActImp: false
+        }, {
+            ActImp: false
+        }, {
+            ActImp: true
+        }, {
+            ActImp: false
+        }, {
+            ActImp: false
+        }, {
+            ActImp: false
+        }, {
+            ActImp: true
+        }, {
+            ActImp: false
+        }, {
+            ActImp: false
+        }, {
+            ActImp: false
+        }, {
+            ActImp: true
+        }, {
+            ActImp: false
+        }, {
             ActImp: false
         }, {
             ActImp: false
@@ -650,12 +307,19 @@
             columns: [
                 {
                     field: "ActImp",
-                    title: "All",
-                    columns: [{
-                        selectable: true,
-                        width: 40
-                    }]
+                    width: 120,
+                    template: "<input type='checkbox' data-bind='checked:dirty' />",
+                    headerTemplate: "<input id='checkAll' type='checkbox' onclick='checkAll(this)'/>"
                 },
+
+                // {
+                //     field: "ActImp",
+                //     title: "All",
+                //     columns: [{
+                //         selectable: true,
+                //         width: 40
+                //     }]
+                // },
 
                 {
                     title: "No",
@@ -826,75 +490,64 @@
                 record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
             },
             dataBound: function (e) {
+                // console.log(e.sender.items())
+                // e.sender.items().each(function () {
+                //     var dataItem = e.sender.dataItem(this);
+                //     console.log('dataItem : ', dataItem)
+                //     kendo.bind(this, dataItem);  //bind ค่าคืน checkbox
+
+                //     if (dataItem.ActImp) {
+                //         $(this).addClass("k-state-selected");
+                //     } else {
+                //         $(this).find('td').children().remove()
+                //     }
+                // })
                 var grid = $("#gridPaymentTransaction").data("kendoGrid");
                 var rows = e.sender.tbody[0].rows;
-                console.log('dataItemAll ', dataItemAll)
+                //console.log('dataItemAll ', dataItemAll)
                 $(rows).each(function (e) {
 
                     var row = this;
                     var dataItem = grid.dataItem(row);
-                    if (dataItem.ActImp == true) {
-                        console.log($(this).find('td').children())
-                        $(this).find('td').children().remove()
-                        //console.log($(this).find('td').children())
-                    }
-                    if (dataItemAll == 'Y') {
-                        console.log(' item select : ', $("#gridPaymentTransaction").data("kendoGrid").select().length)
+                    kendo.bind(this, dataItem); 
+                    if (dataItem.ActImp) {
+                        $(this).addClass("k-state-selected");
                     } else {
-                        console.log('select row')
-
-
+                        $(this).find('td').children().remove()
                     }
 
                 });
 
-                ////////if (dataItemAll == 'Y') {
-                ////////    ////////    console.log('in bound')
-                ////////    ////////    var grid = $("#gridPaymentTransaction").data("kendoGrid");
-
-                ////////    ////////    oldPageSize = grid.dataSource.pageSize();
-                ////////    ////////    grid.dataSource.pageSize(grid.dataSource.data().length);
-                ////////    ////////    grid.dataSource.pageSize(oldPageSize);
-
-
-                ////////    ////////    if (grid.dataSource.data().length == grid.select().length) {
-                ////////    ////////        grid.clearSelection();
-                ////////    ////////    } else {
-
-                ////////    ////////    }
-                ////////    ////////
-
-                ////////    ////////    console.log('dataItemAll after check all : ', dataItemAll)
-                ////////    ////////} else {
-
-                ////////    console.log('dataItemAll after select row  : ', dataItemAll)
-                ////////    var checked = this.checked,
-                ////////        row = $(this).closest("tr"),
-                ////////        grid = $("#gridPaymentTransaction").data("kendoGrid"),
-                ////////        dataItem = grid.dataItem(row);
-                ////////    dataItemAll = 'N'
-                ////////    if (checked) {
-                ////////        console.log(dataItem)
-
-                ////////        //////item_select.push({
-                ////////        //////    "PT_Id": dataItem.PT_Id,
-                ////////        //////    "INSH_BatchNo": dataItem.INSH_BatchNo,
-                ////////        //////    "Status": dataItem.TransStatus,
-                ////////        //////    "TranSubStatus": dataItem.TranSubStatus
-                ////////        //////});
-
-                ////////    } else {
-                ////////        //  console.log('checked false')
-                ////////        //var result2RemoveCheckbox = item_select.filter(function (v, i) {
-                ////////        //    if (v.PT_Id === dataItem.PT_Id) { item_select.splice(i, 1) }
-                ////////        //});
-                ////////        //var result2RemoveTempBatch = item_select.filter(function (v, i) {
-                ////////        //    if (v.PT_Id === dataItem.PT_Id) { item_select.splice(i, 1) }
-                ////////        //});
-                ////////    }
-                ////////}
-
+                console.log('e.sender.dataSource.view().length : ', e.sender.dataSource.view().length)
+                console.log(' e.sender.items().find(":checked").length : ', e.sender.items().find(":checked").length)
+                $("#checkAll")[0].checked = e.sender.items().find(":checked").length == e.sender.dataSource.view().length;
             },
+            // dataBound: function (e) {
+                // var grid = $("#gridPaymentTransaction").data("kendoGrid");
+                // var rows = e.sender.tbody[0].rows;
+                // console.log('dataItemAll ', dataItemAll)
+                // $(rows).each(function (e) {
+
+                //     var row = this;
+                //     var dataItem = grid.dataItem(row);
+                //     if (dataItem.ActImp == true) {
+                //         console.log($(this).find('td').children())
+                //         $(this).find('td').children().remove()
+                //         //console.log($(this).find('td').children())
+                //     }
+                //     if (dataItemAll == 'Y') {
+                //         console.log(' item select : ', $("#gridPaymentTransaction").data("kendoGrid").select().length)
+                //     } else {
+                //         console.log('select row')
+
+
+                //     }
+
+                // });
+
+
+
+            // },
             //persistSelection: true,
             noRecords: {
                 template: "No data available please search again"
@@ -911,16 +564,46 @@
         });
 
         var grid = $("#gridPaymentTransaction").data("kendoGrid");
-        grid.thead.on("click", ".k-checkbox", onClick);
+        // grid.thead.on("click", ".k-checkbox", onClick);
         $("#gridPaymentTransaction").data("kendoGrid").table.on("click", ".k-checkbox", selectRow);
 
-        //options = JSON.parse(localStorage.getItem("kendo-grid-paymenttransaction-options"));
-        //if (optionsJSON) {
-        //    console.log('has options')
-        //    var options = JSON.parse(optionsJSON);
-        //    grid.setOptions(options);
-        //}
+    }
 
+    function checkAll(input) {
+        var grid = $("#gridPaymentTransaction").data("kendoGrid");
+        oldPageSize = grid.dataSource.pageSize();
+        grid.dataSource.pageSize(grid.dataSource.data().length);
+
+        var items = grid.items();
+        // // console.log('press check all : ', input)
+        var items = grid.dataSource.data();
+        // console.log('items check all : ', items)
+        for (var i = 0; i < items.length; i++) {
+            console.log('items [', i, '] =  ', items[i])
+            // console.log('input  =  ',input.checked)
+            if (items[i].ActImp == input.checked) {
+                console.log('ActImp  =  ', items[i].ActImp, 'input.checked  =  ', input.checked)
+                // items[i].ActImp = input.checked;
+                items[i].dirty = true;
+            } else {
+                dataItem.dirty = false;
+            }
+        }
+        // items.each(function(k,v)
+        // { 
+        //     console.log('k : ', k , ' v : ',v)
+        //  var dataItem = grid.dataItem(this);
+        //  console.log('dataItem : ', dataItem)
+        //     console.log('input  =  ',input.checked)
+        //   if(dataItem.ActImp == input.checked){
+        //     dataItem.ActImp = input.checked;
+        //     dataItem.dirty = true;
+        //   }else{
+        //     dataItem.dirty = false;
+        //   }
+        // })
+        grid.refresh();
+        grid.dataSource.pageSize(oldPageSize);
     }
 
     function selectRow() {
@@ -969,7 +652,7 @@
             grid.clearSelection();
             dataItemAll = "N";
         } else {
-            for (var i = 0; i < grid.dataSource.data().length; i++){
+            for (var i = 0; i < grid.dataSource.data().length; i++) {
                 console.log('ein or  : ', grid.tbody.find('tr:eq(' + i + ') td:eq(0)').is('.k-checkbox'))
                 if (grid.tbody.find('tr:eq(' + i + ') td:eq(0)').is('.k-checkbox')) {
                     //var uid = grid.dataSource.data()[i].uid
@@ -987,7 +670,7 @@
             }
             //console.log('grid >> ', grid.select().length)
             dataItemAll = "Y";
-      //  dataItemAll = "Y";
+            //  dataItemAll = "Y";
         };
         grid.dataSource.pageSize(oldPageSize);
 
@@ -1010,580 +693,5 @@
     })
 
 
-   //////// function openReportTabAndSetStatusInsturntion() {
-   ////////     var batch_select = [];
-   ////////     //console.log('item_select', item_select)
-   ////////     if (item_select.length > 0) {
-   ////////      //   console.log("item_select dddddd : ", item_select)
-   ////////         for (var i = 0; i < item_select.length; i++) {
-   ////////             if (item_select[i].INSH_BatchNo != "" && item_select[i].INSH_BatchNo != null) {
-   ////////                 batch_select.push(item_select[i].INSH_BatchNo)
-   ////////             }
-   ////////         }
-   ////////         var batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-
-   ////////         var lastindex = (batch_select_unique.length - 1);
-   ////////         $.each(batch_select_unique, function (k, v) {
-
-   ////////             $.ajax({
-   ////////                 "async": true,
-   ////////                 "crossDomain": true,
-   ////////                 "url": url + "/instruction",
-   ////////                 "method": "Post",
-   ////////                 "data": {
-   ////////                     UserName: localStorage.getItem("userID"),
-   ////////                     AppTokenId: getCookie('tokenAppId'),
-   ////////                     INSH_BatchNo: batch_select_unique[k],
-   ////////                     PT_Id: null,
-   ////////                     ActionType: "SETCONFIRM",
-   ////////                     MethodAction: 'PATCH'
-   ////////                 }
-   ////////             }).done(function (response) {
-   ////////                 console.log('openReportTabAndSetStatusInsturntion >> ', response, url)
-   ////////                 if (response.status.code == "200") {
-   ////////                     if (k == lastindex) {
-   ////////                         console.log("response : ", response, 'xx >> ', batch_select_unique.join(":"))
-
-
-
-   ////////                                         $(function () {
-   ////////                                             $.post('/Transaction/SendParamBatch',
-   ////////                                                 { "UserName": localStorage.getItem("userID"), "AppTokenId": getCookie('tokenAppId'), "INSH_BatchNoGroup": batch_select_unique.join(":"), "url": window.location.protocol + "//" + location.host},
-   ////////                                                 function (data) {
-   ////////                                                   //  alert("Success " + data.success);
-   ////////                                                     window.open('/reportView/Index', '_blank');
-   ////////                                                 });
-   ////////                                         });
-
-   ////////                     }
-   ////////                 } else {
-   ////////                     createNotification(" " + response.status.description, "error");
-   ////////                 }
-
-   ////////             })
-   ////////         })
-
-   ////////     } else {
-   ////////         createNotification(" Please Select Data", "error");
-   ////////     }
-   //////// }
-
-
-
-
-   //////// $("#send-approve").click(function (e) {
-   ////////     var grid = $("#gridPaymentTransaction").data("kendoGrid");
-   ////////     var gridOptions = grid.getOptions()
-   ////////     delete gridOptions.dataSource.data
-   ////////     var optionsJSON = JSON.stringify(gridOptions);
-
-   ////////     if ($('input[name=typeSearch]:checked').val() == "byBatch") {
-   ////////         item_select.push({
-   ////////             "INSH_BatchNo": $("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[0].INSH_BatchNo
-   ////////         })
-   ////////         sendApprovePaymetNoBatch(optionsJSON)
-   ////////     } else if (item_select.length > 0) {
-   ////////         if ($('input[name=typeSearch]:checked').val() == "oth") {
-   ////////             $('#send-approve').show()
-   ////////         }
-   ////////         sendApprovePaymetNoBatch(optionsJSON)
-   ////////     } else {
-   ////////         createNotification(" Plase Select data ", "error")
-   ////////     }
-
-   ////////     ////if (item_select.length > 0) {
-   ////////     ////    sendApprovePaymetNoBatch(optionsJSON)
-   ////////     ////} else {
-   ////////     ////    createNotification(' Please select data. ', 'error')
-   ////////     ////}
-
-   //////// })
-
-   //////// function sendApprovePaymetNoBatch(optionsJSON) {
-   ////////     //id_batch_select = item_select_batch.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     //  console.log("item_select = ", item_select)
-   ////////     //  console.log("optionsJSON = ", optionsJSON)
-   ////////     var batch_select = []
-   ////////     var batch_select_unique = []
-
-
-
-   ////////     $.each(item_select, function (k, v) {
-   ////////         console.log(item_select[k].INSH_BatchNo)
-   ////////         if ($('input[name=typeSearch]:checked').val() == "oth") {
-   ////////             if (item_select[k].Status != "Ready" && item_select[k].Status != "Pending Approve") {
-   ////////                 batch_select.push(item_select[k].INSH_BatchNo)
-   ////////             }
-   ////////         } else {
-   ////////             if (item_select[k].Status != "Ready" && item_select[k].Status != "Pending Approve") {
-   ////////                 batch_select.push(item_select[k].INSH_BatchNo)
-   ////////             }
-   ////////             //batch_select.push(item_select[k].INSH_BatchNo)
-   ////////         }
-   ////////     })
-   ////////     console.log('itemselect send to approve > ', item_select)
-   ////////     batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     var length_item = batch_select_unique.length
-
-
-
-   ////////     $.each(batch_select_unique, function (k, v) {
-   ////////         console.log('batch_select_unique[k] = ', batch_select_unique[k])
-   ////////         if (batch_select_unique[k] != null) {
-   ////////             $.ajax({
-   ////////                 "async": true,
-   ////////                 "crossDomain": true,
-   ////////                 "url": url + "/instruction",
-   ////////                 "method": "Post",
-   ////////                 "data": {
-   ////////                     UserName: localStorage.getItem("userID"),
-   ////////                     AppTokenId: getCookie('tokenAppId'),
-   ////////                     INSH_BatchNo: batch_select_unique[k],
-   ////////                     PT_Id: null,
-   ////////                     ActionType: "SETCONFIRM",
-   ////////                     "MethodAction": 'PATCH'
-   ////////                 }
-   ////////             }).done(function (response) {
-   ////////                 if (response.status.code == "200") {
-   ////////                     console.log(response)
-
-   ////////                     $.ajax({
-   ////////                         "async": true,
-   ////////                         "crossDomain": true,
-   ////////                         "url": url + "/instruction",
-   ////////                         "method": "POST",
-   ////////                         "data": {
-   ////////                             "UserName": localStorage.getItem("userID"),
-   ////////                             "AppTokenId": getCookie('tokenAppId'),
-   ////////                             "INSH_BatchNo": batch_select_unique[k],
-   ////////                             "ActionType": "REQAPPROVE",
-   ////////                             "MethodAction": 'POST'
-   ////////                         }
-   ////////                     }).done(function (response) {
-   ////////                         console.log(response)
-   ////////                         console.log(batch_select_unique[k])
-   ////////                         if (response.status.code == "200") {
-   ////////                             if (k == (length_item - 1)) {
-   ////////                                 createNotification(" " + response.dataSet.SetMassage, "info")
-   ////////                                 data = JSON.parse(localStorage.getItem("dataSearch"))
-   ////////                                 actionSearch(data, optionsJSON)
-   ////////                             }
-   ////////                         } else {
-   ////////                             createNotification(' ' + response.status.description, 'error')
-   ////////                         }
-   ////////                     })
-
-
-   ////////                 } else {
-   ////////                     createNotification(' ' + response.status.description, "error");
-   ////////                 }
-
-   ////////             })
-   ////////         }
-   ////////     });
-   //////// }
-
-   //////// $('#approve').click(function (e) {
-
-   ////////     var batch_select = []
-   ////////     var batch_select_unique = []
-   ////////     var item_select_id = []
-
-   ////////     //ถ้าที่ติ๊กเลือกข้อมูลมา
-   ////////     if (item_select.length > 0) {
-
-   ////////         $.each(item_select, function (k, v) {
-   ////////             //ข้อมูลที่เลือกมาแต่ละตัว
-   ////////             if (item_select[k].Status != "Ready") {
-   ////////                 if (item_select[k].Status == "Pending Approve") {
-   ////////                     batch_select.push(item_select[k].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     item_select_id.push(item_select[k].PT_Id)
-   ////////                 }
-   ////////             }
-   ////////             //else {
-   ////////             //    createNotification(" Data is Ready.", "error")
-   ////////             //}
-
-   ////////         })
-   ////////     } else {
-   ////////         //ถ้าไม่เลือกอะไรมาเลยใช้ข้อมูลใน Grid ทั้งหมด
-   ////////         for (var i = 0; i < $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length; i++) {
-   ////////             if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus != "Ready") {
-   ////////                 if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus == "Pending Approve") {
-   ////////                     batch_select.push($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     createNotification(' Please select data.', 'error')
-   ////////                 }
-   ////////             } else {
-   ////////                 if (i == $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length) {
-   ////////                     createNotification(" Data is Ready.", "error")
-   ////////                 }
-   ////////             }
-
-   ////////         }
-   ////////     }
-   ////////     console.log('item_select_id to approve : ', item_select_id)
-   ////////     console.log('batch_select to approve : ', batch_select)
-   ////////     batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     console.log('batch_select_unique to approve : ', batch_select_unique)
-
-   ////////     if (item_select_id.length > 0 || batch_select.length > 0) {
-   ////////        // return false;
-   ////////         approve(item_select_id, batch_select_unique)
-   ////////     }
-   ////////     //////////////if (item_select_id.length > 0 || batch_select.length > 0) {
-   ////////     //////////////    approve(item_select_id, batch_select_unique)
-   ////////     //////////////} else {
-   ////////     //////////////    if (item_select.length > 0) {
-   ////////     //////////////        createNotification(' Data is already.', 'error')
-   ////////     //////////////    } else {
-   ////////     //////////////        //console.log('ไม่ได้เลือกอะไรมา')
-
-   ////////     //////////////        for (var i = 0; i < $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length; i++) {
-   ////////     //////////////            if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus != "Ready") {
-   ////////     //////////////                if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus == "Pending Approve") {
-   ////////     //////////////                    batch_select.push($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].INSH_BatchNo)
-   ////////     //////////////                } else {
-   ////////     //////////////                    createNotification(' Please select data.', 'error')
-   ////////     //////////////                }
-   ////////     //////////////            }
-
-   ////////     //////////////        }
-   ////////     //////////////        batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     //////////////        approve(item_select_id, batch_select_unique)
-
-   ////////     //////////////    }
-   ////////     //////////////}
-
-   //////// })
-
-   //////// function approve(item_select_id, batch_select_unique) {
-   ////////     //console.log(" item_select approve = ", item_select_id)
-   ////////     //console.log(" batch_select_unique approve = ", batch_select_unique)
-
-   ////////     var grid = $("#gridPaymentTransaction").data("kendoGrid");
-   ////////     var gridOptions = grid.getOptions()
-   ////////     delete gridOptions.dataSource.data
-   ////////     var optionsJSON = JSON.stringify(gridOptions);
-
-   ////////     if (item_select_id.length > 0) {
-   ////////         // approve แบบ pending delete
-   ////////         $.each(item_select_id, function (k, v) {
-   ////////             $.ajax({
-   ////////                 "async": true,
-   ////////                 "crossDomain": true,
-   ////////                 "url": url + "/instruction",
-   ////////                 "method": "Post",
-   ////////                 "data": {
-   ////////                     UserName: localStorage.getItem("userID"),
-   ////////                     AppTokenId: getCookie('tokenAppId'),
-   ////////                     INSH_BatchNo: null,
-   ////////                     PT_Id: item_select_id[k],
-   ////////                     ActionType: "SETCANCEL",
-   ////////                     "MethodAction": 'PATCH'
-   ////////                 }
-   ////////             }).done(function (response) {
-   ////////                 console.log(response)
-   ////////                 if (response.status.code == "200") {
-   ////////                     // console.log(k, item_select_id - 1)
-   ////////                     if (k == (item_select_id.length - 1)) {
-   ////////                         createNotification(" " + response.dataSet.SetMassage, "info")
-   ////////                         data = JSON.parse(localStorage.getItem("dataSearch"))
-   ////////                         actionSearch(data, optionsJSON)
-   ////////                     }
-   ////////                 } else {
-   ////////                     createNotification(' ' + response.dataSet.SetMassage, 'error')
-   ////////                 }
-   ////////             });
-   ////////         })
-
-
-   ////////     } else {
-   ////////         // กรณี approve แบบ pending approve
-   ////////         $.ajax({
-   ////////             "async": true,
-   ////////             "crossDomain": true,
-   ////////             "url": url + "/instruction",
-   ////////             "method": "Post",
-   ////////             "data": {
-   ////////                 UserName: localStorage.getItem("userID"),
-   ////////                 AppTokenId: getCookie('tokenAppId'),
-   ////////                 INSH_BatchNo: batch_select_unique[0],
-   ////////                 PT_Id: null,
-   ////////                 ActionType: "SETAPPROVE",
-   ////////                 "MethodAction": 'PATCH'
-   ////////             }
-   ////////         }).done(function (response) {
-   ////////             console.log(response)
-   ////////             if (response.status.code == "200") {
-   ////////                 createNotification(" " + response.status.description, "info")
-   ////////                 data = JSON.parse(localStorage.getItem("dataSearch"))
-   ////////                 item_select = []
-
-   ////////                 $('#BatchRevNo').val($('#BatchRevNo').val())
-   ////////                 $("#search").click()
-   ////////                 //actionSearch(data, optionsJSON)
-
-   ////////             } else {
-   ////////                 createNotification(" " + response.status.description, "error")
-   ////////             }
-   ////////         });
-   ////////     }
-   //////// }
-
-
-   //////// $('#reject').click(function (e) {
-
-
-   ////////     var batch_select = []
-   ////////     var batch_select_unique = []
-   ////////     var item_select_id = []
-
-   ////////     //ถ้าที่ติ๊กเลือกข้อมูลมา
-   ////////     if (item_select.length > 0) {
-   ////////         console.log('เลือกข้อมูล item_select')
-   ////////         $.each(item_select, function (k, v) {
-   ////////             //ข้อมูลที่เลือกมาแต่ละตัว
-   ////////             if (item_select[k].Status != "Ready") {
-   ////////                 if (item_select[k].Status == "Pending Approve") {
-   ////////                     batch_select.push(item_select[k].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     item_select_id.push(item_select[k].PT_Id)
-   ////////                 }
-   ////////             } else {
-   ////////                 createNotification(" Data is Ready.", "error")
-   ////////             }
-
-   ////////         })
-   ////////     } else {
-   ////////         //ถ้าไม่เลือกอะไรมาเลยใช้ข้อมูลใน Grid ทั้งหมด
-
-   ////////         console.log('ไม่เลือกอะไรมาเลยใช้ข้อมูลใน Grid ทั้งหมด')
-   ////////         for (var i = 0; i < $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length; i++) {
-   ////////             if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus != "Ready") {
-   ////////                 if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus == "Pending Approve") {
-   ////////                     batch_select.push($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     createNotification(' Please select data.', 'error')
-   ////////                 }
-   ////////             } else {
-   ////////                 if (i == $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length) {
-   ////////                     createNotification(" Data is Ready.", "error")
-   ////////                 }
-   ////////             }
-
-   ////////         }
-   ////////     }
-
-
-   ////////     batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     if (item_select_id.length > 0 || batch_select_unique.length > 0) {
-   ////////         // return false;
-   ////////         console.log(" item_select Rej = ", item_select_id)
-   ////////         console.log(" batch_select_unique Rej = ", batch_select_unique)
-   ////////         reject(item_select_id, batch_select_unique)
-   ////////     }
-
-   //////// })
-
-   //////// function reject(item_select_id, batch_select_unique) {
-   ////////     console.log(" item_select reject = ", item_select_id)
-   ////////     console.log(" batch_select_unique reject = ", batch_select_unique)
-
-   ////////     var grid = $("#gridPaymentTransaction").data("kendoGrid");
-   ////////     var gridOptions = grid.getOptions()
-   ////////     delete gridOptions.dataSource.data
-   ////////     var optionsJSON = JSON.stringify(gridOptions);
-   ////////     //var countselect = id_select_unique.length - 1;
-   ////////     //return false
-   ////////     if (item_select_id.length > 0) {
-   ////////         // reject แบบ pending delete
-   ////////         for (var i = 0; i < item_select_id.length; i++) {
-   ////////             $.ajax({
-   ////////                 "async": true,
-   ////////                 "crossDomain": true,
-   ////////                 "url": url + "/instruction",
-   ////////                 "method": "Post",
-   ////////                 "data": {
-   ////////                     UserName: localStorage.getItem("userID"),
-   ////////                     AppTokenId: getCookie('tokenAppId'),
-   ////////                     INSH_BatchNo: null,
-   ////////                     PT_Id: item_select_id[i],
-   ////////                     ActionType: "SETCANCEL",
-   ////////                     "MethodAction": 'DELETE'
-   ////////                 }
-   ////////             }).done(function (response) {
-   ////////                 //   console.log(response, i, id_select_unique.length)
-
-   ////////                 if (response.status.code == "200") {
-   ////////                     createNotification(" " + response.dataSet.SetMassage, "info")
-   ////////                     if (i == item_select_id.length) {
-   ////////                         data = JSON.parse(localStorage.getItem("dataSearch"))
-   ////////                         actionSearch(data, optionsJSON)
-
-   ////////                     }
-   ////////                 } else {
-   ////////                     createNotification(" " + response.status.description, "error")
-   ////////                 }
-
-   ////////             });
-   ////////         }
-
-
-   ////////     } else {
-   ////////         // กรณี reject แบบ pending approve
-   ////////         $.ajax({
-   ////////             "async": true,
-   ////////             "crossDomain": true,
-   ////////             "url": url + "/instruction",
-   ////////             "method": "Post",
-   ////////             "data": {
-   ////////                 UserName: localStorage.getItem("userID"),
-   ////////                 AppTokenId: getCookie('tokenAppId'),
-   ////////                 INSH_BatchNo: batch_select_unique[0],
-   ////////                 PT_Id: null,
-   ////////                 ActionType: "SETREJECT",
-   ////////                 "MethodAction": 'PATCH'
-   ////////             }
-   ////////         }).done(function (response) {
-   ////////             console.log(response)
-   ////////             if (response.status.code == "200") {
-   ////////                 createNotification(" " + response.dataSet.SetMassage, "info")
-   ////////                 data = JSON.parse(localStorage.getItem("dataSearch"))
-   ////////                 actionSearch(data, optionsJSON)
-
-   ////////             } else {
-   ////////                 createNotification(" " + response.status.description, "error")
-   ////////             }
-   ////////         });
-   ////////     }
-
-
-
-   //////// }
-
-
-
-
-   //////// $("#un-batch").click(function (e) {
-
-   ////////     var batch_select = []
-   ////////     var batch_select_unique = []
-   ////////     var item_select_id = []
-
-   ////////     //ถ้าที่ติ๊กเลือกข้อมูลมา
-   ////////     if (item_select.length > 0) {
-
-   ////////         $.each(item_select, function (k, v) {
-   ////////             //ข้อมูลที่เลือกมาแต่ละตัว
-   ////////             if (item_select[k].Status != "Ready") {
-   ////////                 if (item_select[k].Status == "Pending Approve" || item_select[k].Status == "Pending Edit") {
-   ////////                     batch_select.push(item_select[k].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     item_select_id.push(item_select[k].PT_Id)
-   ////////                 }
-   ////////             } else {
-   ////////                 createNotification(" Data is Ready.", "error")
-   ////////             }
-
-   ////////         })
-   ////////     } else {
-   ////////         //ถ้าไม่เลือกอะไรมาเลยใช้ข้อมูลใน Grid ทั้งหมด
-   ////////       //  alert('ไม่เลือกอะไรมาเลยใช้ข้อมูลใน Grid ทั้งหมด')
-   ////////         for (var i = 0; i < $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length; i++) {
-   ////////             if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus != "Ready") {
-   ////////                 if ($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus == "Pending Approve" || $("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].TransStatus == "Pending Edit") {
-   ////////                     batch_select.push($("#gridPaymentTransaction").data("kendoGrid").dataSource.data()[i].INSH_BatchNo)
-   ////////                 } else {
-   ////////                     createNotification(' Please select data.', 'error')
-   ////////                 }
-   ////////             } else {
-   ////////                 if (i == $("#gridPaymentTransaction").data("kendoGrid").dataSource.data().length) {
-   ////////                     createNotification(" Data is Ready.", "error")
-   ////////                 }
-   ////////             }
-
-   ////////         }
-   ////////     }
-
-
-   ////////     batch_select_unique = batch_select.filter((v, i, a) => a.indexOf(v) === i)
-   ////////     if (item_select_id.length > 0 || batch_select_unique.length > 0) {
-   ////////         // return false;
-   ////////         console.log(" item_select unbatch = ", item_select_id)
-   ////////         console.log(" batch_select_unique unbatch = ", batch_select_unique)
-   ////////         unbatch(item_select_id, batch_select_unique)
-   ////////     }
-
-   ////////  //   unbatch()
-   //////// })
-
-   //////// function unbatch(item_select_id, batch_select_unique) {
-   ////////     console.log(" item_select unbatc = ", item_select_id)
-   ////////     console.log(" batch_select_unique unbatc = ", batch_select_unique)
-
-   ////////     if (batch_select_unique.length > 0) {
-   ////////         $.ajax({
-   ////////             "async": true,
-   ////////             "crossDomain": true,
-   ////////             "url": url + "/instruction",
-   ////////             "method": "Post",
-   ////////             "data": {
-   ////////                 UserName: localStorage.getItem("userID"),
-   ////////                 AppTokenId: getCookie('tokenAppId'),
-   ////////                 INSH_BatchNo: batch_select_unique[0],
-   ////////                 ActionType: "SETUNBATCH",
-   ////////                 "MethodAction": 'DELETE'
-   ////////             }
-   ////////         }).done(function (response) {
-   ////////             console.log(response)
-   ////////             if (response.status.code == "200") {
-   ////////                 createNotification(" " + response.dataSet.SetMassage, "info")
-   ////////                 window.location.reload()
-   ////////             } else {
-   ////////                 createNotification(" " + response.Status.description, "error")
-   ////////             }
-
-   ////////         });
-   ////////     } else {
-   ////////         createNotification(" Please select data", "error")
-   ////////     }
-   //////// }
-
-
-
-
-   //////// function back() {
-   ////////     if (getURLParameter('Wrk_Detail') == null) {
-   ////////        // window.location.href = '/Master/Payee'
-   ////////     } else {
-   ////////         window.location.href = '/Master/Approve'
-   ////////     }
-   //////// }
-
-
-   //////// function editDetails(PT_Id, PT_Running) {
-   ////////     var grid = $("#gridPaymentTransaction").data("kendoGrid");
-   ////////     var gridOptions = grid.getOptions()
-   ////////     delete gridOptions.dataSource.data
-   ////////     localStorage.setItem("kendo-grid-paymenttransaction-options", JSON.stringify(gridOptions));
-   ////////     (PT_Id == "null") ? PT_Id = 0 : PT_Id;
-   ////////     (PT_Running == "null") ? PT_Running = 0 : PT_Running;
-   ////////     urlrow = "/Transaction/PaymentData?PT_Id=" + PT_Id + "&PT_Running=" + PT_Running + (getURLParameter("Wrk_Detail") == null ? "" : "&Wrk_Detail=" + getURLParameter("Wrk_Detail").split(" ")[0]);
-   ////////     window.open(urlrow , '_blank');
-   //////// }
-
-   //////// function showDetails(PT_Id, PT_Running) {
-   ////////     var grid = $("#gridPaymentTransaction").data("kendoGrid");
-   ////////     var gridOptions = grid.getOptions()
-   ////////     delete gridOptions.dataSource.data
-   ////////     localStorage.setItem("kendo-grid-paymenttransaction-options", JSON.stringify(gridOptions));
-   ////////     (PT_Id == "null") ? PT_Id = 0 : PT_Id;
-   ////////     (PT_Running == "null") ? PT_Running = 0 : PT_Running;
-   ////////     //(ACC_Id_Wrk == "null") ? ACC_Id_Wrk = 0 : ACC_Id_Wrk;
-   ////////     urlrow = "/Transaction/PaymentDetail?PT_Id=" + PT_Id + "&PT_Running=" + PT_Running + (getURLParameter("Wrk_Detail") == null ? "" : "&Wrk_Detail=" + getURLParameter("Wrk_Detail").split(" ")[0]) +"&canEdit=false";
-   ////////     window.open(urlrow, '_blank');
-   //////// }
 
 </script>
