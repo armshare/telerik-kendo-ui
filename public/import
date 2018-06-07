@@ -1,0 +1,1844 @@
+<style>
+    .k-grid-header th.k-header {
+        white-space: normal;
+    }
+
+    .k-grid .k-checkbox-label.k-no-text {
+        padding: 0;
+    }
+
+    .k-grid .k-header {
+        background-color: #8461b5;
+    }
+
+        .k-grid .k-header .k-button {
+            color: #fff;
+            background-color: #8461b5;
+            border-color: #f5f5f5;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+    body {
+        overflow-x: auto !important;
+    }
+</style>
+<script src="~/Scripts/moment.js"></script>
+<div class="row">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="headerPage">
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 scbam-content">
+
+            <span id="popupNotification"></span>
+            <form id="paymentDetailForm" class="form-horizontal form-widgets">
+
+
+                <div id="detailForm">
+
+                    <div class="form-group ">
+                        <div class="col-md-4 col-lg-4">
+                            <div><label for="Expense_Code_Grp">Expense Code </label></div>
+                            <input id="Expense_Code_Grp" style="width: 50%;" />
+
+                        </div>
+                        <div class="col-lg-4 col-md-4" style="margin-top:1rem;">
+                            <label class="k-label">Custodian : </label>
+                            <select id="Custodian_Code" multiple="multiple" style="width: 50%"></select>
+                        </div>
+                        <div id="typeMeThod" class="col-lg-4 col-md-4" style="margin-top:1rem;">
+                            <label class="k-label">ประเภทการจ่ายเงิน : </label>
+                            <input id="PaymentType" style="width: 50%;" />
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-md-6 col-lg-6">
+                            <h3>Trade Date</h3>
+                            <div class="form-group ">
+                                <div class="col-md-6 col-lg-4">
+                                    <div><label for="TradeStrDate">Start Date </label></div>
+                                    <input id='TradeStrDate' maxlength="15" style="width:100%" />
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div><label for="TradeEndDate">End Date </label></div>
+                                    <input id='TradeEndDate' maxlength="15" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <h3>Settle Date</h3>
+                            <div class="form-group ">
+                                <div class="col-md-6 col-lg-4">
+                                    <div><label for="SettleStrDate">Start Date </label></div>
+                                    <input id='SettleStrDate' maxlength="15" style="width:100%" />
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div><label for="SettleEndDate">End Date </label></div>
+                                    <input id="SettleEndDate" maxlength="15" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+
+                        <div class="col-md-4 col-lg-4">
+                            <h3>ประเภทของข้อมูล</h3>
+                            <div class="col-md-5">
+                                <input type="radio" name="importType" id="new" value="NONE" class="k-radio" checked>
+                                <label class="k-radio-label" for="new">ข้อมูลที่ยังไม่ได้ Import</label>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5">
+                                <input type="radio" name="importType" id="all" value="IMP" class="k-radio">
+                                <label class="k-radio-label" for="all">ข้อมูลที่ Import แล้ว</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+            <button class="btn col-lg-1 k-primary" id='search' type="submit">Search</button>
+
+        </div>
+
+    </div>
+    <div>
+        <div id="loading" style="display:none; z-index:10; text-align:center;">
+            <div class="loader loader--style3" title="Loading">
+                <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="xml"
+                                  attributeName="transform"
+                                  type="rotate"
+                                  from="0 25 25"
+                                  to="360 25 25"
+                                  dur="0.6s"
+                                  repeatCount="indefinite" />
+
+
+
+
+
+                        </path>
+                        </svg>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="width:160%">
+        <div class="form-group displayGrid">
+            <div id="gridPaymentTransaction"></div>
+            <div class="col-lg-12" style="margin-top:1%">
+                <button class="btn k-button col-lg-1 k-primary " id='import'>IMPORT</button>
+                <button class="btn k-button col-lg-2 k-primary" id='import-merge' style="margin-left:1%">IMPORT MERGE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var item_select = []
+    var dataSourceResultSearch;
+    window.record = 0
+    var oldPageSize = 0;
+    var dataItemAll = 'N'
+    var lastpage = 1;
+    var linkService = url + '/ImpETSData'
+    var sliderCreated = false; // fact check page customize in grid
+    var factSearchAll = true; // fact check search all
+    var resultPRD;
+    var ClickAll = "N";
+
+
+    $.ajax(checkAutorizePage()).done(function () {
+
+        if (checkCookie() !== true) {
+            window.location.href = '/'
+        }
+        //  validateDatePicker("#paymentDetailForm");
+        validateSearchDatePicker("#paymentDetailForm")
+        // console.log("authorizePMgt : " + authorizePMgt);
+        // console.log("authorizeOper : " + authorizePOper);
+        kendoWidget()
+        tradeDatePickerView()
+        settleDatePickerView()
+
+        $(".displayGrid").hide()
+
+    })
+
+    function requireSettleDate() {
+        var fact = true
+        // SettleStrDate SettleEndDate
+
+
+        if ($("#SettleStrDate").data("kendoDatePicker").value() == '' || $("#SettleStrDate").data("kendoDatePicker").value() == null) {
+            $("#SettleStrDate").data("kendoDatePicker").element.focus();
+            var popupNotification = $("#popupNotification").kendoNotification({
+                autoHideAfter: 3000,
+                width: "25%",
+                position: {
+                    bottom: 120
+                }
+            }).data("kendoNotification");
+
+            popupNotification.show("Please Select Settle Date. !!", "error");
+            fact = false
+            return fact
+        }
+
+        if ($("#SettleEndDate").data("kendoDatePicker").value() == '' || $("#SettleEndDate").data("kendoDatePicker").value() == null) {
+            $("#SettleEndDate").data("kendoDatePicker").element.focus();
+            var popupNotification = $("#popupNotification").kendoNotification({
+                autoHideAfter: 3000,
+                width: "25%",
+                position: {
+                    bottom: 120
+                }
+            }).data("kendoNotification");
+
+            popupNotification.show("Please Select Settle Date. !!", "error");
+            fact = false
+            return fact
+        }
+        console.log("fact", fact)
+        return fact
+    }
+
+
+
+    function showloading() {
+        $("#loading").show();
+        $(".displayGrid").css('opacity', '0.1');
+        $(".scbam-content").css('opacity', '0.1');
+    }
+    function hideloading() {
+        $("#loading").hide();
+        $(".displayGrid").css('opacity', '1');
+        $(".scbam-content").css('opacity', '1');
+    }
+
+    function kendoWidget() {
+
+        $("#Expense_Code_Grp").kendoComboBox({
+            placeholder: "Select ...",
+            filter: "contains",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: url + "/mastervalue?mastervaluekey=EXPIMP",
+                        dataType: "json",
+                        type: "GET"
+                    }
+                },
+                schema: {
+                    data: function (response) {
+
+                        for (var i = 0; i < response.data.MasterValue.length; i++) {
+
+                            response.data.MasterValue[i].Exp_Name_Txt_name = response.data.MasterValue[i].ValueKey + "  " + response.data.MasterValue[i].ValueNameTh
+                        }
+
+                        return response.data.MasterValue;
+                    }
+                }
+            },
+            dataValueField: "ValueKey",
+            dataTextField: "Exp_Name_Txt_name",
+            autoBind: false,
+            autoWidth: true,
+            optionLabel: "Select a Expense...",
+            change: function () {
+                if (this.value() == this.text()) {
+
+                    if (this.value() != '') {
+                        this.value("")
+                        this.text("")
+                        var popupNotification = $("#popupNotification").kendoNotification({
+                            autoHideAfter: 3000,
+                            width: "25%",
+                            position: {
+                                bottom: 120
+                            }
+                        }).data("kendoNotification");
+                        popupNotification.show("Not match data !", "error");
+                    }
+                } else {
+                    resultPRD = 0
+                    console.log("fact this.value()", this.value())
+                    var listExpPRD = ['EXP-00042', 'EXP-00043', 'EXP-00047']
+                    resultPRD = (listExpPRD.filter((x) => { return x == this.value() })).length
+
+                }
+            }
+        })
+
+
+        $("#PaymentType").kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: url + "/mastervalue?mastervaluekey=PYMTYPE",
+                        dataType: "json",
+                        type: "GET"
+                    }
+                },
+                schema: {
+                    parse: function (response) {
+                        var temp_data = [];
+                        for (var i = 0; i < response.data.MasterValue.length; i++) {
+                            if (response.data.MasterValue[i].ValueKey != 'PETTYCASH' && response.data.MasterValue[i].ValueKey != 'OTHER') {
+                                var temp = {
+                                    ValueKey: response.data.MasterValue[i].ValueKey, // "CHEQUE"
+                                    ValueText: response.data.MasterValue[i].ValueKey + " ", // "CHEQUE "
+                                };
+                                temp_data.push(temp);
+                            }
+
+                        }
+                        // console.log('temp_data >> ', temp_data)
+                        return temp_data;
+                    }
+                },
+
+                serverFiltering: true
+            },
+            dataValueField: "ValueKey",
+            dataTextField: "ValueText",
+            autoBind: false,
+
+        })
+
+        $("#Custodian_Code").kendoMultiSelect({
+            placeholder: "Select custodian...",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: url + "/Custodianlist?AppTokenId=" + getCookie('tokenAppId') + "&UserName=" + localStorage.getItem('userID') + "&ReqData=ac",
+                        dataType: "json",
+                        type: "GET"
+                    }
+                },
+                schema: {
+                    data: function (response) {
+                        for (var i = 0; i < response.data.length; i++) {
+
+                            response.data[i].Custodian_Code_full = response.data[i].Custodian_Code + "  "
+                        }
+                        return response.data;
+                    }
+                }
+            },
+            dataValueField: "Custodian_Code",
+            dataTextField: "Custodian_Code_full",
+            autoBind: false,
+
+        })
+    }
+
+    function tradeDatePickerView() {
+
+        function startChange() {
+            var startDate = tradeStart.value(),
+                endDate = tradeEnd.value();
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate());
+                tradeEnd.min(startDate);
+            } else if (endDate) {
+                tradeStart.max(new Date(endDate));
+            } else {
+                if (startDate == null) {
+                    tradeEnd.min(new Date(startDate));
+                }
+            }
+        }
+
+        function endChange() {
+            var endDate = tradeEnd.value(),
+                startDate = tradeStart.value();
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                tradeStart.max(endDate);
+            } else if (startDate) {
+                var newEnd = (startDate == null) ? new Date() : new Date(startDate)
+                tradeEnd.min(newEnd);
+                tradeStart.max(new Date(moment().add(1, 'year')));
+            } else {
+                if (endDate == null) {
+                    // console.log('endSettle endDate == null : ', endDate, new Date(moment().add(1, 'year')))
+                    tradeStart.max(new Date(moment().add(1, 'year')));
+                }
+            }
+        }
+
+        //Maake input DatePicker Field
+        var tradeStart = $("#TradeStrDate").kendoDatePicker({
+            format: "dd/MM/yyyy",
+            parseFormats: ["dd/MM/yyyy"],
+            change: startChange
+        }).data("kendoDatePicker");
+
+        var tradeEnd = $("#TradeEndDate").kendoDatePicker({
+            format: "dd/MM/yyyy",
+            change: endChange
+        }).data("kendoDatePicker");
+
+        // setting max/min datepicker
+        tradeStart.max(tradeEnd.value());
+        tradeEnd.min(tradeStart.value());
+    }
+
+    function settleDatePickerView() {
+
+        function startChange() {
+
+            var startDate = settleStart.value(),
+                endDate = settleEnd.value();
+
+            //// console.log(' startDate : ', startDate)
+            //// console.log(' endDate : ', endDate)
+
+            if (startDate) {
+                //// console.log('settle startDate : ', startDate)
+                startDate = new Date(startDate);
+                //// console.log('settle  new Date(startDate): ', startDate)
+                startDate.setDate(startDate.getDate());
+                settleEnd.min(startDate);
+            } else if (endDate) {
+                //// console.log('settle endDate : ', endDate)
+                settleStart.max(new Date(endDate));
+                //// console.log('settle  new Date(endDate): ', endDate)
+            } else {
+                if (startDate == null) {
+                    settleEnd.min(new Date(startDate));
+                }
+            }
+
+        }
+
+        function endChange() {
+
+
+            var endDate = settleEnd.value(),
+                startDate = settleStart.value();
+
+            //// console.log('endSettle startDate : ', startDate)
+            //// console.log('endSettle endDate : ', endDate)
+
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                settleStart.max(endDate);
+            } else if (startDate) {
+                var newEnd = (startDate == null) ? new Date() : new Date(startDate)
+                settleEnd.min(newEnd);
+                settleStart.max(new Date(moment().add(1, 'year')));
+            } else {
+                if (endDate == null) {
+
+                    //// console.log('endSettle endDate == null : ', endDate, new Date(moment().add(1, 'year')))
+                    settleStart.max(new Date(moment().add(1, 'year')));
+                }
+            }
+
+        }
+
+        //Maake input DatePicker Field
+        var settleStart = $("#SettleStrDate").kendoDatePicker({
+            format: "dd/MM/yyyy",
+            parseFormats: ["dd/MM/yyyy"],
+            change: startChange
+        }).data("kendoDatePicker");
+
+        var settleEnd = $("#SettleEndDate").kendoDatePicker({
+            format: "dd/MM/yyyy",
+            change: endChange
+        }).data("kendoDatePicker");
+
+        // setting max/min datepicker
+        settleStart.max(settleEnd.value());
+        settleEnd.min(settleStart.value());
+    }
+
+    $("#search").click(function () {
+        sliderCreated = false
+        dataSource = ''
+        ClickAll = 'N'
+        $('input#header-chb.k-checkbox.header-checkbox').val("U")
+        dataItemAll = "N"
+        console.log("factresultPRD", resultPRD)
+
+        if ($("#Expense_Code_Grp").data("kendoComboBox").value() == '' || $("#Expense_Code_Grp").data("kendoComboBox").value() == null) {
+            $("#Expense_Code_Grp").data("kendoComboBox").input.focus();
+            var popupNotification = $("#popupNotification").kendoNotification({
+                autoHideAfter: 3000,
+                width: "25%",
+                position: {
+                    bottom: 120
+                }
+            }).data("kendoNotification");
+
+            popupNotification.show("Please Select Expense. !!", "error");
+            return false
+        }
+
+        if (resultPRD == 0) {
+            if (!requireSettleDate()) {
+                return false
+            }
+        }
+        if ($("#gridPaymentTransaction").data("kendoGrid") === undefined) {
+            // console.log('no grid')
+            BindData()
+        } else {
+            $("#gridPaymentTransaction").data("kendoGrid").destroy()
+            $("#gridPaymentTransaction").empty()
+            // console.log('grid data')
+            BindData()
+        }
+        $(".displayGrid").show()
+    })
+
+    function BindData() {
+        let dataReq
+        factSearchAll = true
+        $.each($($('#paymentDetailForm')).find('.k-input'), (k, v) => {
+            if ($($($($('#paymentDetailForm')).find('.k-input'))[k]).val() != '') {
+                factSearchAll = false
+            }
+        })
+
+        if ($("#gridPaymentTransaction").data("kendoGrid") === undefined) {
+            // console.log('no grid1')
+
+        } else {
+            $("#gridPaymentTransaction").data("kendoGrid").destroy()
+            // console.log('grid data1')
+        }
+
+        if (oldPageSize == 0) { oldPageSize = 20; }
+
+        var list = $("#Custodian_Code").data("kendoMultiSelect").value()
+        var listConvert = []
+        //   list.forEach((k, v) => { listConvert.push(encodeURIComponent(k)) })
+
+        if (factSearchAll) {
+            // console.log('seach all : ', factSearchAll)
+            dataReq = {
+                UserName: localStorage.getItem("userID"),
+                AppTokenId: getCookie("tokenAppId"),
+                ExpCode: $("#Expense_Code_Grp").data("kendoComboBox").value(), //EXP-00014
+                ReqData: $('input[name=importType]:checked').val(),
+                Custodian_Code: list.join(':'),
+                SettleStr: ($("#SettleStrDate").data("kendoDatePicker").value() == null) ? '' : moment($("#SettleStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+                SettleEnd: ($("#SettleEndDate").data("kendoDatePicker").value() == null) ? '' : moment($("#SettleEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00,
+                TradeStr: moment().startOf('month').format('YYYY-MM-DDT00:00:00'), //2018-01 - 01T00: 00:00
+                TradeEnd: moment().endOf('month').format('YYYY-MM-DDT00:00:00'), //2018-01 - 01T00: 00:00
+                TypeOfData: "SCH"
+            }
+        } else {
+            // console.log('seach by : ', factSearchAll)
+            dataReq = {
+                UserName: localStorage.getItem("userID"),
+                AppTokenId: getCookie("tokenAppId"),
+                ExpCode: $("#Expense_Code_Grp").data("kendoComboBox").value(), //EXP-00014
+                ReqData: $('input[name=importType]:checked').val(),
+                Custodian_Code: list.join(':'),
+                SettleStr: ($("#SettleStrDate").data("kendoDatePicker").value() == null) ? '' : moment($("#SettleStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+                SettleEnd: ($("#SettleEndDate").data("kendoDatePicker").value() == null) ? '' : moment($("#SettleEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00,
+                TradeStr: ($("#TradeStrDate").data("kendoDatePicker").value() == null) ? '' : moment($("#TradeStrDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+                TradeEnd: ($("#TradeEndDate").data("kendoDatePicker").value() == null) ? '' : moment($("#TradeEndDate").data("kendoDatePicker").value()).format("YYYY-MM-DDT00:00:00"), //2018-01 - 01T00: 00:00
+                TypeOfData: "SCH"
+
+            }
+        }
+
+        //================ dataSource ================
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    $.post(linkService, dataReq, function getResult(response) {
+                        // console.log(response)
+                        if (response.status.code == '200') {
+                            options.success(response.data);
+                        } else {
+                            options.success([]);
+                        }
+                    })
+                }
+            },
+            schema: {
+                model: {
+                    id: "TF_Id",
+                    fields: {
+                        ActImp: { type: "boolean" },
+                        Exp_Code_ETS: { type: "string" },
+                        Exp_Code_Source: { type: "string" },
+                        Exp_Desc_En_ETS: { type: "string" },
+                        Exp_Desc_Th_ETS: { type: "string" },
+                        FundCode: { type: "string" },
+                        GrossAmt: { type: "number" },
+                        LastImpDT: { type: "date" },
+                        PT_Source: { type: "string" },
+                        PYM_Fund_AccNo: { type: "string" },
+                        PYM_Fund_AccType: { type: "string" },
+                        PYM_Fund_Bank: { type: "string" },
+                        PYM_Fund_Branch: { type: "string" },
+                        PYM_Fund_Custodian: { type: "string" },
+                        PYM_Method: { type: "string" },
+                        Payee_AccBank: { type: "string" },
+                        Payee_AccBankBranch: { type: "string" },
+                        Payee_AccNo: { type: "string" },
+                        Payee_AccType: { type: "string" },
+                        Payee_ETS: { type: "string" },
+                        Payee_ETS_Name_En: { type: "string" },
+                        Payee_ETS_Name_Th: { type: "string" },
+                        Payee_Source: { type: "string" },
+                        SettleDate: { type: "date" },
+                        SubFundCode: { type: "string" },
+                        TF_Id: { type: "number" },
+                        TF_ImpStatus: { type: "string" },
+                        TF_ImpType: { type: "string" },
+                        TotalAmt: { type: "number" },
+                        TradeDate: { type: "date" },
+                        VatAmt: { type: "number" },
+                        VatRate: { type: "number" },
+                        WTAmt: { type: "number" },
+                        WTRate: { type: "number" },
+                        SettleAmt: { type: "number" }
+                    }
+                }
+            },
+            aggregate: [
+                { field: "GrossAmt", aggregate: "sum" },
+                { field: "VatAmt", aggregate: "sum" },
+                { field: "TotalAmt", aggregate: "sum" },
+                { field: "WTAmt", aggregate: "sum" },
+                { field: "SettleAmt", aggregate: "sum" }
+            ],
+            pageSize: 30,
+            persistSelection: true,
+        });
+
+        //================ Grid ================
+        if ($('input[name=importType]:checked').val() == 'IMP') {
+            gridExport(dataSource)
+            $("#import").hide()
+            $("#import-merge").hide()
+            $("#typeMeThod").hide()
+        } else {
+            gridImport(dataSource)
+            //grid = $("#gridPaymentTransaction").data("kendoGrid");
+            //grid.thead.on("click", "#header-chb", onClickAll);
+            //   $("#gridPaymentTransaction").data("kendoGrid").table.on("click", ".k-checkbox", clickRow);
+            //////////grid.thead.on("click", ".k-checkbox", onClick);
+            ////////$("#gridPaymentTransaction").data("kendoGrid").table.on("click", ".k-checkbox", selectRow);
+            $("#import").show()
+            $("#import-merge").show()
+            $("#typeMeThod").show()
+
+        }
+
+        //================bind click event to the checkbox
+
+    }
+
+    function onClickAll(ev) {
+        console.log('aaa')
+       // kendo.ui.progress($('.scbam-content'), true);
+       // var grid = $("#gridPaymentTransaction").data("kendoGrid");
+       // var lastPageSize = grid.dataSource.pageSize();
+       //grid.dataSource.pageSize(grid.dataSource.data().length);
+      
+       //ClickAll =
+
+
+       //grid.dataSource.pageSize(lastPageSize);
+       //kendo.ui.progress($('.scbam-content'), false);
+
+
+        var grid = $("#gridPaymentTransaction").data("kendoGrid");
+        oldPageSize = grid.dataSource.pageSize();
+        grid.dataSource.pageSize(grid.dataSource.data().length);
+
+
+        if (grid.dataSource.data().length == grid.select().length) {
+            grid.clearSelection();
+            ClickAll = "N";
+
+        } else {
+            grid.select("tr");
+            ClickAll = "Y";
+        };
+
+        grid.dataSource.pageSize(oldPageSize);
+
+
+
+    }
+
+
+    //function clickRow() {
+    //    var checked = this.checked,
+    //        row = $(this).closest("tr"),
+    //        grid = $("#gridPaymentTransaction").data("kendoGrid"),
+    //        dataItem = grid.dataItem(row);
+    //    console.log('click row', dataItem)
+    //}
+
+    function gridImport(dataSource) {
+        $("#gridPaymentTransaction").kendoGrid({
+            dataSource: dataSource,
+            toolbar: ["excel"],
+            excel: {
+                allPages: true
+            },
+            excelExport: function (e) {
+                var rows = e.workbook.sheets[0].rows;
+
+                for (var ri = 0; ri < rows.length; ri++) {
+                    var row = rows[ri];
+
+                    if (row.type == "group-footer" || row.type == "footer") {
+                        for (var ci = 0; ci < row.cells.length; ci++) {
+                            var cell = row.cells[ci];
+                            if (cell.value) {
+                                // Use jQuery.fn.text to remove the HTML and get only the text
+                                cell.value = $(cell.value).text();
+                                // Set the alignment
+                                cell.hAlign = "right";
+                            }
+                        }
+                    }
+                }
+            },
+            dataBound: onDataBound,
+            columns: [
+                //{
+                //    title: "All",
+                //    columns: [{ selectable: true, width: "40px" }]
+                //},
+
+                {
+                    //selectable: true,
+                    headerTemplate: "<input type='checkbox' id='header-chb' class='header-checkbox' style=' -webkit-transform: scale(2);'>",
+                    template: function (dataItem) {
+                        var input = ''
+                        if (dataItem.ActImp) {
+                            input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            //input = "<input type='checkbox' id='" + dataItem.uid + "' class='row-checkbox' style=' -webkit-transform: scale(2);'>"
+                        } else {
+                            input = ''
+                        }
+
+                        return input;
+                    },
+                    width: 40
+                },
+
+                {
+                    title: "ลำดับที่",
+                    template: "#= ++record #",
+                    width: 60,
+                    sortable: false
+                },
+                {
+                    field: "FundCode",
+                    title: "รหัสกองทุน",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    },
+                    template: '<div style:"text-align:left" > #= (SubFundCode != null ) ? Fund_Code + " : " + SubFundCode : FundCode # </div>',
+                    width: 150
+                },
+
+                {
+                    title: "รหัสผู้รับเงิน",
+                    columns: [{
+                        field: "Payee_Source",
+                        title: "Source",
+                        width: 150,
+                        filterable: false,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+
+                    }, {
+                        field: "Payee_ETS",
+                        title: "ETS",
+                        width: 150,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+                    }]
+                },
+                {
+                    title: "รหัสประจำตัวค่าใช้จ่าย",
+                    columns: [
+                        {
+                            field: "Exp_Code_ETS",
+                            title: "ETS",
+                            width: 100,
+                            filterable: {
+                                cell: {
+                                    operator: "contains",
+                                    template: customSearch,
+                                    showOperators: false
+                                }
+                            }
+                        },
+                        {
+                            field: "Exp_Code_Source",
+                            title: "Source",
+                            width: 150,
+                            filterable: {
+                                cell: {
+                                    operator: "contains",
+                                    template: customSearch,
+                                    showOperators: false
+                                }
+                            }
+                        },
+                    ]
+                },
+                {
+                    field: "TradeDate", title: "วันที่จัดทำคำสั่ง",
+                    width: 120,
+                    template: '#= (TradeDate != null ) ? kendo.toString(kendo.parseDate(TradeDate), "dd/MM/yyyy") : "" #',
+                    filterable: false,
+                    footerTemplate: "<span style='float:right'> Total: </span>"
+                },
+                {
+                    field: "GrossAmt", title: "จำนวนเงิน",
+                    template: "<span style='float:right'>#=kendo.toString(GrossAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "VatAmt",
+                    title: "ภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(VatAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "TotalAmt",
+                    title: "จำนวนเงินรวมภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(TotalAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "WTAmt",
+                    title: "จำนวนเงินภาษีเงินได้หัก ณ ที่จ่าย",
+                    template: "<span style='float:right'>#=kendo.toString(WTAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "SettleAmt", title: "จำนวนเงินจ่ายสุทธิ",
+                    template: "<span style='float:right'>#=kendo.toString(SettleAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+
+                {
+                    field: "SettleDate", title: "วันที่สั่งจ่ายเงิน",
+                    width: 120,
+                    template: '#= (SettleDate != null ) ? kendo.toString(kendo.parseDate(SettleDate), "dd/MM/yyyy") : "" #',
+                    filterable: false
+                },
+                {
+                    title: "วิธีการจ่ายเงิน",
+                    field: "PYM_Method",
+                    width: 130,
+                    filterable: false
+                },
+                {
+                    field: "Exp_Desc_En_ETS",
+                    title: "ชื่อค่าใช้จ่ายภาษาอังกฤษ",
+                    width: 300,
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    }
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคารผู้จ่ายเงิน",
+                    columns: [{
+                        field: "PYM_Fund_Bank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "PYM_Fund_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    }, {
+                        title: "เลขที่บัญชี",
+                        field: "PYM_Fund_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                },
+                {
+                    field: "TF_ImpStatus", title: "สถานะ", width: 120,
+                    filterable: false
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคาร",
+                    columns: [{
+                        field: "Payee_AccBank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccBankBranch",
+                        title: "สาขา",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        title: "เลขที่บัญชี",
+                        field: "Payee_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                }
+            ],
+            dataBinding: function () {
+                //set record continue
+                record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+            },
+            scrollable: false,
+            noRecords: {
+                template: "No data available please search again"
+            },
+            filterable: {
+                mode: "row"
+            },
+            pageable: {
+                numeric: true,
+                previousNext: true,
+                input: false,
+                refresh: true
+            },
+            persistSelection: true,
+            pageSize: oldPageSize,
+        });
+
+        var grid = $("#gridPaymentTransaction").data("kendoGrid");
+        grid.thead.on("click", "#header-chb", onClickAll);
+    }
+
+
+    /**
+    function gridImport(dataSource) {
+        $("#gridPaymentTransaction").kendoGrid({
+            dataSource: dataSource,
+            toolbar: ["excel"],
+            excel: {
+                allPages: true
+            },
+            excelExport: function (e) {
+                var rows = e.workbook.sheets[0].rows;
+
+                for (var ri = 0; ri < rows.length; ri++) {
+                    var row = rows[ri];
+
+                    if (row.type == "group-footer" || row.type == "footer") {
+                        for (var ci = 0; ci < row.cells.length; ci++) {
+                            var cell = row.cells[ci];
+                            if (cell.value) {
+                                // Use jQuery.fn.text to remove the HTML and get only the text
+                                cell.value = $(cell.value).text();
+                                // Set the alignment
+                                cell.hAlign = "right";
+                            }
+                        }
+                    }
+                }
+            },
+            dataBound: onDataBound,
+            columns: [
+
+                {
+                    title: 'Select All',
+                    headerTemplate: "<input type='checkbox' id='header-chb' class='k-checkbox header-checkbox'><label class='k-checkbox-label' for='header-chb'></label>",
+                    template: function (dataItem) {
+                        dataItem.selected = (dataItem.selected == undefined) ? "N" : dataItem.selected
+                        // // console.log('dataItem : ', dataItem.selected, 'dataItemAll : ', dataItemAll)
+                        var input = ''
+                        if (dataItem.ActImp) {
+                            if ($('#header-chb').val() == "A" || dataItem.selected == "S") {
+                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' checked><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            } else if ($('#header-chb').val() == "U") {
+                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            } else if ((dataItem.selected == "N" || dataItem.selected == "A" || dataItem.selected == "S") && dataItemAll == 'Y') {
+                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' checked><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            } else {
+                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            }
+
+                        } else {
+                            input = ''
+                        }
+
+                        return input;
+                    },
+                    width: 40
+                },
+
+                {
+                    title: "ลำดับที่",
+                    template: "#= ++record #",
+                    width: 60,
+                    sortable: false
+                },
+                {
+                    field: "FundCode",
+                    title: "รหัสกองทุน",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    },
+                    template: '<div style:"text-align:left" > #= (SubFundCode != null ) ? Fund_Code + " : " + SubFundCode : FundCode # </div>',
+                    //template: (function (dataItem) {
+                    //    var Fund_Code = "";
+                    //    var Sub_Fund_Code = "";
+                    //    var full_Fund_Code = "";
+                    //    Fund_Code = dataItem.FundCode;
+                    //    if (dataItem.SubFundCode != null) {
+                    //        full_Fund_Code = Fund_Code + " : " + dataItem.SubFundCode
+                    //    } else {
+                    //        full_Fund_Code = Fund_Code
+                    //    }
+                    //    return "<div style='text-align:left'>" + full_Fund_Code + "</div>";
+                    //}),
+                    width: 150
+                },
+
+                {
+                    title: "รหัสผู้รับเงิน",
+                    columns: [{
+                        field: "Payee_Source",
+                        title: "Source",
+                        width: 150,
+                        filterable: false,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+
+                    }, {
+                        field: "Payee_ETS",
+                        title: "ETS",
+                        width: 150,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+                    }]
+                },
+                {
+                    title: "รหัสประจำตัวค่าใช้จ่าย",
+                    columns: [
+                        {
+                            field: "Exp_Code_ETS",
+                            title: "ETS",
+                            width: 100,
+                            filterable: {
+                                cell: {
+                                    operator: "contains",
+                                    template: customSearch,
+                                    showOperators: false
+                                }
+                            }
+                        },
+                        {
+                            field: "Exp_Code_Source",
+                            title: "Source",
+                            width: 150,
+                            filterable: {
+                                cell: {
+                                    operator: "contains",
+                                    template: customSearch,
+                                    showOperators: false
+                                }
+                            }
+                        },
+                    ]
+                },
+                {
+                    field: "TradeDate", title: "วันที่จัดทำคำสั่ง",
+                    width: 120,
+                    template: '#= (TradeDate != null ) ? kendo.toString(kendo.parseDate(TradeDate), "dd/MM/yyyy") : "" #',
+                    filterable: false,
+                    footerTemplate: "<span style='float:right'> Total: </span>"
+                },
+                {
+                    field: "GrossAmt", title: "จำนวนเงิน",
+                    template: "<span style='float:right'>#=kendo.toString(GrossAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "VatAmt",
+                    title: "ภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(VatAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "TotalAmt",
+                    title: "จำนวนเงินรวมภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(TotalAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "WTAmt",
+                    title: "จำนวนเงินภาษีเงินได้หัก ณ ที่จ่าย",
+                    template: "<span style='float:right'>#=kendo.toString(WTAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "SettleAmt", title: "จำนวนเงินจ่ายสุทธิ",
+                    template: "<span style='float:right'>#=kendo.toString(SettleAmt, 'n')  #</span>",
+                    //template: (function (dataItem) {
+                    //    var settle_amt = "";
+                    //    if (dataItem.SettleAmt != null) {
+                    //        settle_amt = kendo.toString(dataItem.SettleAmt, 'n')
+                    //    } else {
+                    //        settle_amt = ""
+                    //    }
+                    //    return "<div style='text-align:right'>" + settle_amt + "</div>";
+                    //}),
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+
+                {
+                    field: "SettleDate", title: "วันที่สั่งจ่ายเงิน",
+                    width: 120,
+                    template: '#= (SettleDate != null ) ? kendo.toString(kendo.parseDate(SettleDate), "dd/MM/yyyy") : "" #',
+                    filterable: false
+                },
+                {
+                    title: "วิธีการจ่ายเงิน",
+                    field: "PYM_Method",
+                    width: 130,
+                    filterable: false
+                },
+                {
+                    field: "Exp_Desc_En_ETS",
+                    title: "ชื่อค่าใช้จ่ายภาษาอังกฤษ",
+                    width: 300,
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    }
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคารผู้จ่ายเงิน",
+                    columns: [{
+                        field: "PYM_Fund_Bank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "PYM_Fund_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    }, {
+                        title: "เลขที่บัญชี",
+                        field: "PYM_Fund_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                },
+                {
+                    field: "TF_ImpStatus", title: "สถานะ", width: 120,
+                    filterable: false
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคาร",
+                    columns: [{
+                        field: "Payee_AccBank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccBankBranch",
+                        title: "สาขา",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        title: "เลขที่บัญชี",
+                        field: "Payee_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                }
+            ],
+            dataBinding: function () {
+                //set record continue
+                record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+            },
+            scrollable: false,
+            noRecords: {
+                template: "No data available please search again"
+            },
+            filterable: {
+                mode: "row"
+            },
+            pageable: {
+                numeric: true,
+                //  pageSizes: [100, 250, 500],
+                previousNext: true,
+                input: false,
+                refresh: true
+            },
+            page: function (e) {
+                // console.log(e);
+            },
+            persistSelection: true,
+            pageSize: oldPageSize,
+        });
+    }
+
+    */
+    function onDataBound(e) {
+        // console.log('sliderCreated ' ,sliderCreated);
+        if (!sliderCreated) {
+            $($($(".k-grid-pager").children())[7]).remove()
+            $(".k-grid-pager").append($("<input id='pageSizeNumber' class='pageSizeNumber' style='width:5%' />"));
+            $("#pageSizeNumber").kendoNumericTextBox({
+                format: "n0",
+                decimals: 1,
+                min: 1,
+                change: function () {
+                    var value = this.value();
+                    if (this.value() != null) {
+                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(value));
+                    } else {
+                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(30));
+                    }
+
+                    $("#gridPaymentTransaction").data('kendoGrid').refresh();
+                    // console.log(value); //value is the selected date in the numerictextbox
+                }
+            });
+            $('#pageSizeNumber').data('kendoNumericTextBox').value($("#gridPaymentTransaction").data('kendoGrid').dataSource.view().length)
+        }
+
+
+        var allData = e.sender.dataSource.data();
+       
+        $.each(allData, function (k, v) {
+            var grid = $("#gridPaymentTransaction").data("kendoGrid");
+            var dataItem = allData[k]
+            
+
+            if (ClickAll == "Y") {
+                var row = this;
+                if (dataItem.ActImp == true) {
+                    console.log('ActImp >> ', dataItem.ActImp);                
+                   var currentRow = grid.table.find("tr[data-uid='" + dataItem.uid + "']");
+                   grid.select(currentRow);
+                    var Chk = $(currentRow).find(".k-checkbox");
+                    Chk.prop('checked', true);
+
+
+                } else {
+                    var currentRow = grid.table.find("tr[data-uid='" + dataItem.uid + "']");
+                    var Chk = $(currentRow).find(".k-checkbox");
+                    Chk.next().attr('style', "display:none;");
+                }
+            }
+
+        });
+
+    };
+
+
+    function gridExport(dataSource) {
+        $("#gridPaymentTransaction").kendoGrid({
+            dataSource: dataSource,
+            toolbar: ["excel"],
+            excel: {
+                allPages: true
+            },
+            dataBound: onDataBound,
+            excelExport: function (e) {
+                var rows = e.workbook.sheets[0].rows;
+
+                for (var ri = 0; ri < rows.length; ri++) {
+                    var row = rows[ri];
+
+                    if (row.type == "group-footer" || row.type == "footer") {
+                        for (var ci = 0; ci < row.cells.length; ci++) {
+                            var cell = row.cells[ci];
+                            if (cell.value) {
+                                // Use jQuery.fn.text to remove the HTML and get only the text
+                                cell.value = $(cell.value).text();
+                                // Set the alignment
+                                cell.hAlign = "right";
+                            }
+                        }
+                    }
+                }
+            },
+            columns: [
+                {
+                    title: "ลำดับที่",
+                    template: "#= ++record #",
+                    width: 80,
+                    sortable: false
+                },
+                {
+                    field: "FundCode",
+                    title: "รหัสกองทุน",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    },
+                    template: '<div style:"text-align:left" > #= (SubFundCode != null ) ? Fund_Code + " : " + SubFundCode : FundCode # </div>',
+                    //template: (function (dataItem) {
+                    //    var Fund_Code = "";
+                    //    var Sub_Fund_Code = "";
+                    //    var full_Fund_Code = "";
+                    //    Fund_Code = dataItem.FundCode;
+                    //    if (dataItem.SubFundCode != null) {
+                    //        full_Fund_Code = Fund_Code + " : " + dataItem.SubFundCode
+                    //    } else {
+                    //        full_Fund_Code = Fund_Code
+                    //    }
+                    //    return "<div style='text-align:left'>" + full_Fund_Code + "</div>";
+                    //}),
+                    width: 150,
+                    //lockable: true,
+                    //locked: true
+                },
+                {
+                    title: "รหัสผู้รับเงิน",
+                    columns: [{
+                        field: "Payee_Source",
+                        title: "Source",
+                        width: 200,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+
+                    }, {
+                        field: "Payee_ETS",
+                        title: "ETS",
+                        width: 200,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+                    }]
+                },
+                {
+                    title: "รหัสประจำตัวค่าใช้จ่าย",
+                    columns: [{
+                        field: "Exp_Code_Source",
+                        title: "Source",
+                        width: 200,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        },
+                    }, {
+                        field: "Exp_Code_ETS",
+                        title: "ETS",
+                        width: 200,
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                template: customSearch,
+                                showOperators: false
+                            }
+                        }
+                    }],
+
+                },
+                {
+                    field: "TradeDate", title: "วันที่จัดทำคำสั่ง",
+                    width: 150,
+                    template: '#= (TradeDate != null ) ? kendo.toString(kendo.parseDate(TradeDate), "dd/MM/yyyy") : "" #',
+                    filterable: false,
+                    footerTemplate: "<span style='float:right'> Total: </span>",
+                },
+                {
+                    field: "GrossAmt", title: "จำนวนเงิน",
+                    template: "<span style='float:right'>#=kendo.toString(GrossAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "VatAmt",
+                    title: "ภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(VatAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "TotalAmt",
+                    title: "จำนวนเงินรวมภาษีมูลค่าเพิ่ม",
+                    template: "<span style='float:right'>#=kendo.toString(TotalAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "WTAmt",
+                    title: "จำนวนเงินภาษีเงินได้หัก ณ ที่จ่าย",
+                    template: "<span style='float:right'>#=kendo.toString(WTAmt, 'n')  #</span>",
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    filterable: false
+                },
+                {
+                    field: "SettleAmt", title: "จำนวนเงินจ่ายสุทธิ",
+                    template: "<span style='float:right'>#=kendo.toString(SettleAmt, 'n')  #</span>",
+
+                    width: 120,
+                    aggregates: ["sum"],
+                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
+                    //footerTemplate: " #if(sum==null){ # 0.00 #}else{ kendo.toString(sum, 'n') } #",
+                    filterable: false
+                },
+                {
+                    field: "SettleDate", title: "วันที่สั่งจ่ายเงิน",
+                    width: 150,
+                    template: '#= (SettleDate != null ) ? kendo.toString(kendo.parseDate(SettleDate), "dd/MM/yyyy") : "" #',
+                    filterable: false
+                },
+                {
+                    title: "วิธีการจ่ายเงิน",
+                    field: "PYM_Method",
+                    width: 130,
+                    filterable: false
+                },
+                {
+                    field: "Exp_Desc_En_ETS",
+                    title: "ชื่อค่าใช้จ่ายภาษาอังกฤษ",
+                    width: 300,
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            template: customSearch,
+                            showOperators: false
+                        }
+                    }
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคารผู้จ่ายเงิน",
+                    columns: [{
+                        field: "PYM_Fund_Bank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "PYM_Fund_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    }, {
+                        title: "เลขที่บัญชี",
+                        field: "PYM_Fund_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                },
+                {
+                    title: "ข้อมูลบัญชีเงินฝากธนาคาร",
+                    columns: [{
+                        field: "Payee_AccBank",
+                        title: "ธนาคาร",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccBankBranch",
+                        title: "สาขา",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        field: "Payee_AccType",
+                        title: "ประเภทบัญชี",
+                        width: 100,
+                        filterable: false
+                    },
+                    {
+                        title: "เลขที่บัญชี",
+                        field: "Payee_AccNo",
+                        width: 120,
+                        filterable: false
+                    }]
+                },
+                {
+                    field: "TF_ImpStatus", title: "สถานะ", width: 120,
+                    filterable: false
+                }
+
+            ],
+            dataBinding: function () {
+                //set record continue
+                record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+            },
+            scrollable: false,
+            noRecords: {
+                template: "No data available please search again"
+            },
+            filterable: {
+                mode: "row"
+            },
+            pageable: {
+                numeric: true,
+                //  pageSizes: [30, 250, 500],
+                previousNext: true,
+                input: false,
+                refresh: true
+            },
+            page: function (e) {
+                // console.log(e);
+            },
+            persistSelection: true,
+            pageSize: oldPageSize,
+        });
+    }
+
+    function removeA(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L > 1 && arr.length) {
+            what = a[--L];
+            while ((ax = arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    }
+
+    function selectRow() {
+
+        var checked = this.checked,
+            row = $(this).closest("tr"),
+            grid = $("#gridPaymentTransaction").data("kendoGrid"),
+            dataItem = grid.dataItem(row);
+        //dataItemAll = 'N'
+
+        $("#gridPaymentTransaction").data("kendoGrid").thead.find(".k-checkbox").prop('checked', false);
+
+        if (checked) {
+            dataItem.selected = "S"
+            // console.log(dataItem)
+        } else {
+            // console.log('checked false')
+            item_select = removeA(item_select, dataItem.TF_Id);
+            dataItem.selected = "U"
+            // console.log(dataItem)
+            $('#header-chb').val("S")
+        }
+
+        // console.log('selected event select : ', item_select)
+
+    }
+
+    function onClick(e) {
+        var grid = $("#gridPaymentTransaction").data("kendoGrid");
+
+
+        //  let Field_fundCode = $($(grid.thead).find('tr.k-filter-row').children()[2]).children().data('field');
+        let val_fundCode = $($($(grid.thead).find('tr.k-filter-row').children()[2]).children().children()).find('input.k-textbox').val()
+        //   let Field_Payee_ETS = $($(grid.thead).find('tr.k-filter-row').children()[4]).children().data('field');
+        let val_Payee_ETS = $($($(grid.thead).find('tr.k-filter-row').children()[4]).children().children()).find('input.k-textbox').val()
+        //   let Field_Exp_Code_ETS = $($(grid.thead).find('tr.k-filter-row').children()[11]).children().data('field');
+        let val_Exp_Code_ETS = $($($(grid.thead).find('tr.k-filter-row').children()[11]).children().children()).find('input.k-textbox').val()
+        //   let Field_Exp_Desc_En_ETS = $($(grid.thead).find('tr.k-filter-row').children()[12]).children().data('field');
+        let val_Exp_Desc_En_ETS = $($($(grid.thead).find('tr.k-filter-row').children()[12]).children().children()).find('input.k-textbox').val()
+
+        if (val_fundCode != '' || val_Payee_ETS != '' || val_Exp_Code_ETS != '' || val_Exp_Desc_En_ETS != '') {
+
+            oldPageSize = grid.dataSource.pageSize();
+            grid.dataSource.pageSize(grid.dataSource.data().length);
+            // console.log(' lod ds : ', grid.dataSource.data())
+            $.each(grid.dataSource.view(), function (k, v) {
+                dataItemAll = "N"
+                if (v.selected == "S") {
+                    $($("#gridPaymentTransaction").data("kendoGrid").tbody.find('.k-checkbox')[k]).prop('checked', false)
+                    v.selected = "U"
+                } else {
+                    $($("#gridPaymentTransaction").data("kendoGrid").tbody.find('.k-checkbox')[k]).prop('checked', true)
+                    v.selected = "S"
+                }
+
+            })
+
+            grid.dataSource.pageSize(oldPageSize);
+
+        } else {
+            item_select = [];
+
+            var lengthdata = grid.dataSource.data().length
+            // console.log('lengthdata : ', lengthdata)
+
+            if ($(e.currentTarget).val() == 'A') {
+                $(e.currentTarget).val('U')
+                dataItemAll = "N"
+
+            } else {
+                $(e.currentTarget).val('A')
+                dataItemAll = "Y";
+            }
+
+
+
+            sliderCreated = false
+            BindData()
+        }
+
+
+    }
+
+
+    $("#import").click(function (e) {
+        var dataSource = $("#gridPaymentTransaction").data("kendoGrid").dataSource.data()
+        if (checkPaymentMethod()) {
+            item_select = []
+            $(dataSource).each(function (k, v) {
+                v.selected = (v.selected == undefined) ? "N" : v.selected
+                if (v.ActImp) {
+
+                    if ($('#header-chb').val() == "A" || v.selected == "S") {
+                        // console.log('header-chb', $('#header-chb').val(), 'TF_Id', v.TF_Id, '1 v.selected', v.selected, '1dataItemAll', dataItemAll)
+                        item_select.push(v.TF_Id)
+                    } else {
+
+                        if ((v.selected == "N" || v.selected == "A" || v.selected == "S") && dataItemAll == 'Y') {
+                            // console.log('1 #header-chb', $('#header-chb').val(), '1 v.TF_Id', v.TF_Id, '1 v.selected', v.selected, '1dataItemAll', dataItemAll)
+                            item_select.push(v.TF_Id)
+                        }
+                    }
+
+                }
+            })
+
+            if (item_select.length > 0) {
+                var uniqueArray = item_select.filter((v, i, a) => a.indexOf(v) === i)
+
+                showloading()
+                $.post(linkService, {
+                    UserName: localStorage.getItem("userID"),
+                    AppTokenId: getCookie("tokenAppId"),
+                    TF_Id_Grp: uniqueArray.join(':'),
+                    ImpActionType: "SPLIT",
+                    PaymentType: $("#PaymentType").data('kendoDropDownList').value(),
+                    TypeOfData: "GEN",
+                    MethodActionType: "POST"
+
+                }, function getResult(response) {
+                    hideloading()
+                    if (response.status.code == '200') {
+                        createNotification(' ' + response.dataSet.SetMassage)
+                        item_select = []
+                        BindData()
+                    } else {
+                        // error status != 200
+                        createNotification(' ' + response.dataSet.SetMassage)
+                    }
+
+                })
+
+            } else {
+                createNotification(" Plase Select data ", "error")
+                hideloading()
+            }
+        }
+        ////lastpage = $("#gridPaymentTransaction").data("kendoGrid").dataSource.page();
+        ////// console.log(' import click lastpage ', lastpage)
+    })
+
+    $("#import-merge").click(function (e) {
+        var dataSource = $("#gridPaymentTransaction").data("kendoGrid").dataSource.data()
+        if (checkPaymentMethod()) {
+            showloading()
+            item_select = []
+            $(dataSource).each(function (k, v) {
+                v.selected = (v.selected == undefined) ? "N" : v.selected
+                if (v.ActImp) {
+
+                    if ($('#header-chb').val() == "A" || v.selected == "S") {
+                        //    // console.log('header-chb', $('#header-chb').val(), 'TF_Id', v.TF_Id, '1 v.selected', v.selected, '1dataItemAll', dataItemAll)
+                        item_select.push(v.TF_Id)
+                    } else {
+
+                        if ((v.selected == "N" || v.selected == "A" || v.selected == "S") && dataItemAll == 'Y') {
+                            //      // console.log('1 #header-chb', $('#header-chb').val(), '1 v.TF_Id', v.TF_Id, '1 v.selected', v.selected, '1dataItemAll', dataItemAll)
+                            item_select.push(v.TF_Id)
+                        }
+                    }
+
+                }
+            })
+
+            if (item_select.length > 0) {
+                var uniqueArray = item_select.filter((v, i, a) => a.indexOf(v) === i)
+
+                $.post(linkService, {
+                    UserName: localStorage.getItem("userID"),
+                    AppTokenId: getCookie("tokenAppId"),
+                    TF_Id_Grp: uniqueArray.join(':'),
+                    ImpActionType: "MERGE",
+                    PaymentType: $("#PaymentType").data('kendoDropDownList').value(),
+                    TypeOfData: "GEN",
+                    MethodActionType: "POST"
+
+                }, function getResult(response) {
+                    // console.log(response)
+                    hideloading()
+                    if (response.status.code == '200') {
+                        createNotification(' ' + response.dataSet.SetMassage)
+                        item_select = []
+                        BindData()
+                    } else {
+                        // error status != 200
+                        createNotification(' ' + response.dataSet.SetMassage)
+                    }
+
+                })
+            } else {
+                createNotification(" Plase Select data ", "error")
+                hideloading()
+            }
+        }
+        //lastpage = $("#gridPaymentTransaction").data("kendoGrid").dataSource.page();
+        //// console.log(' import click lastpage merger ', lastpage)
+    })
+
+
+    function customSearch(args) {
+        args.element.css("width", "100%").addClass("k-textbox").keydown(function (e) {
+
+            setTimeout(function () {
+                $(e.target).trigger("change");
+
+
+            });
+        });
+    }
+
+    function checkPaymentMethod() {
+        if ($("#PaymentType").data('kendoDropDownList').value() == "") {
+            createNotification(' Please select type payment', 'error')
+            $("#PaymentType").data('kendoDropDownList').open()
+            return false
+        } else {
+            return true
+        }
+
+
+    }
+
+</script>
