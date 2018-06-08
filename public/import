@@ -22,6 +22,18 @@
     body {
         overflow-x: auto !important;
     }
+
+    #gridPaymentTransaction input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+
+    #gridPaymentTransaction td .Chk {
+        vertical-align: super;
+        text-align: left;
+    }
+
+
 </style>
 <script src="~/Scripts/moment.js"></script>
 <div class="row">
@@ -156,6 +168,7 @@
     var factSearchAll = true; // fact check search all
     var resultPRD;
     var ClickAll = "N";
+    var ListChk = [];
 
 
     $.ajax(checkAutorizePage()).done(function () {
@@ -212,9 +225,7 @@
         console.log("fact", fact)
         return fact
     }
-
-
-
+    
     function showloading() {
         $("#loading").show();
         $(".displayGrid").css('opacity', '0.1');
@@ -472,6 +483,8 @@
     }
 
     $("#search").click(function () {
+        ListChk = [];
+
         sliderCreated = false
         dataSource = ''
         ClickAll = 'N'
@@ -571,6 +584,7 @@
                     $.post(linkService, dataReq, function getResult(response) {
                         // console.log(response)
                         if (response.status.code == '200') {
+                            console.log('response.data >> ',response.data)
                             options.success(response.data);
                         } else {
                             options.success([]);
@@ -638,12 +652,9 @@
             $("#import-merge").hide()
             $("#typeMeThod").hide()
         } else {
+            
             gridImport(dataSource)
-            //grid = $("#gridPaymentTransaction").data("kendoGrid");
-            //grid.thead.on("click", "#header-chb", onClickAll);
-            //   $("#gridPaymentTransaction").data("kendoGrid").table.on("click", ".k-checkbox", clickRow);
-            //////////grid.thead.on("click", ".k-checkbox", onClick);
-            ////////$("#gridPaymentTransaction").data("kendoGrid").table.on("click", ".k-checkbox", selectRow);
+          
             $("#import").show()
             $("#import-merge").show()
             $("#typeMeThod").show()
@@ -654,50 +665,206 @@
 
     }
 
-    function onClickAll(ev) {
-        console.log('aaa')
-       // kendo.ui.progress($('.scbam-content'), true);
-       // var grid = $("#gridPaymentTransaction").data("kendoGrid");
-       // var lastPageSize = grid.dataSource.pageSize();
-       //grid.dataSource.pageSize(grid.dataSource.data().length);
-      
-       //ClickAll =
+    
+    function toggleAll() {
 
+        e = window.event;
+        var checked = $(e.target).context.checked;
+        if (checked) {
+            ListChk = [];
+            ClickAll = 'Y';
+            $('.Chk').prop('checked', true);
 
-       //grid.dataSource.pageSize(lastPageSize);
-       //kendo.ui.progress($('.scbam-content'), false);
+            var dataSource = $("#gridPaymentTransaction").data("kendoGrid").dataSource;
+            var filters = dataSource.filter();
+            var allData = dataSource.data();
+            var query = new kendo.data.Query(allData);
+            var data = query.filter(filters).data;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].ActImp == true) {  //Approved
+                    ListChk.push(data[i].TF_Id);
+                }
+            }
 
-
-        var grid = $("#gridPaymentTransaction").data("kendoGrid");
-        oldPageSize = grid.dataSource.pageSize();
-        grid.dataSource.pageSize(grid.dataSource.data().length);
-
-
-        if (grid.dataSource.data().length == grid.select().length) {
-            grid.clearSelection();
-            ClickAll = "N";
 
         } else {
-            grid.select("tr");
-            ClickAll = "Y";
-        };
+            ListChk = [];
+            ClickAll = 'N';
+            $('.Chk').prop('checked', false);
+        }
+        //console.log('IdApprove ==>> ', IdApprove)
+    }
 
-        grid.dataSource.pageSize(oldPageSize);
+    function toggleClick(Id) {
+        e = window.event;
+        var checked = $(e.target).context.checked;
+        ClickAll = "N";
 
+        if (checked) {
+            ListChk.push(Id);
+        } else {
+        //    $('#ChkAll').prop('checked', false);
+            var index = ListChk.indexOf(Id);
+            ListChk.splice(index, 1);
+        }
+    }
 
+    function onDataBound(arg) {
+        if (!sliderCreated) {
+            $($($(".k-grid-pager").children())[7]).remove()
+            $(".k-grid-pager").append($("<input id='pageSizeNumber' class='pageSizeNumber' style='width:5%' />"));
+            $("#pageSizeNumber").kendoNumericTextBox({
+                format: "n0",
+                decimals: 1,
+                min: 1,
+                change: function () {
+                    var value = this.value();
+                    if (this.value() != null) {
+                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(value));
+                    } else {
+                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(30));
+                    }
+
+                    $("#gridPaymentTransaction").data('kendoGrid').refresh();
+                    // console.log(value); //value is the selected date in the numerictextbox
+                }
+            });
+            $('#pageSizeNumber').data('kendoNumericTextBox').value($("#gridPaymentTransaction").data('kendoGrid').dataSource.view().length)
+        }
+
+        var grid = $("#gridPaymentTransaction").data('kendoGrid')
+        var dataSource = $("#gridPaymentTransaction").data("kendoGrid").dataSource;
+        var filters = dataSource.filter();
+        var allData = dataSource.data();
+        var query = new kendo.data.Query(allData);
+        var data = query.filter(filters).data; 
+        
+        if ($('#header-chb').is(':checked')) {
+            // check in
+            console.log('check in')
+            if (data.length == allData.length) {
+                //no filter
+                console.log('ไม่มี filter อะไร all เลย')
+                $.each(allData, function (k, v) {
+                    if (v.ActImp) {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']");
+                        var Chk = $(currentRow).find(".k-checkbox");
+                        Chk.prop('checked', true);
+                        grid.select("tr[data-uid='" + v.uid + "']")
+                    } else {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']").children();
+                        var Chk = $(currentRow).find(".k-checkbox").next();
+                        Chk.hide();
+                    }
+                });
+
+            } else {
+                console.log(' filter อยู่นะ')
+                $.each(data, function (k, v) {
+                    if (v.ActImp) {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']");
+                        var Chk = $(currentRow).find(".k-checkbox");
+                        Chk.prop('checked', true);
+                        grid.select("tr[data-uid='" + v.uid + "']")
+                    } else {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']").children();
+                        var Chk = $(currentRow).find(".k-checkbox").next();
+                        Chk.hide();
+                    }
+                });
+            }
+        } else {
+            // check out
+            console.log('check out')
+            if (data.length == allData.length) {
+                //no filter
+                console.log('ไม่มี filter อะไร clear all เลย')
+                $.each(allData, function (k, v) {
+                    if (v.ActImp) {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']");
+                        var Chk = $(currentRow).find(".k-checkbox");
+                        Chk.prop('checked', false);
+
+                        if (grid.selectedKeyNames().length == 0) {
+                            grid.clearSelection()
+                        } else {
+                            if ( !$("#chb-header").is(":checked")) {
+                                grid.clearSelection()
+                            } else {
+                                var currentRow = grid.table.find("tr[data-uid='" + v.uid + "'].k-state-selected ");
+                                var Chk = $(currentRow).find(".k-checkbox");
+                                Chk.prop('checked', true);
+
+                            }
+                          
+                        }
+                    } else {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']").children();
+                        var Chk = $(currentRow).find(".k-checkbox").next();
+                        Chk.hide();
+                    }
+                });
+
+            } else {
+                console.log(' clear all มี filter อยู่นะ')
+                $.each(data, function (k, v) {
+                    if (v.ActImp) {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']");
+                        var Chk = $(currentRow).find(".k-checkbox");
+                        Chk.prop('checked', false);
+                        grid.clearSelection()
+                    } else {
+                        var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']").children();
+                        var Chk = $(currentRow).find(".k-checkbox").next();
+                        Chk.hide();
+                    }
+                });
+            }
+        }
+
+        //////////var grid = $("#gridPaymentTransaction").data("kendoGrid");
+        //////////var gridData = grid.dataSource.view();
+        //////////for (var i = 0; i < gridData.length; i++) {
+        //////////    var currentUid = gridData[i].uid;
+        //////////    var id = gridData[i].TF_Id;
+        //////////    var ActImp = gridData[i].ActImp
+            
+           
+        //////////        if (ClickAll == 'Y') {
+
+        //////////            for (var j = 0; j < ListChk.length; j++) {
+        //////////                if (ListChk[j] == id) {
+        //////////                    if (ActImp == false) {
+        //////////                        var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+        //////////                        var Chk = $(currentRow).find(".Chk");
+        //////////                        Chk.attr('style', 'display:none');
+        //////////                    } else { 
+        //////////                    var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+        //////////                    var Chk = $(currentRow).find(".Chk");
+        //////////                    Chk.prop('checked', true);
+        //////////                    }
+        //////////                }
+        //////////            }
+
+        //////////        } else {
+        //////////            if (ActImp == false) {
+        //////////                var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+        //////////                var Chk = $(currentRow).find(".Chk");
+        //////////                Chk.attr('style', 'display:none');
+        //////////            } else {
+        //////////                $('.Chk').prop('checked', false);
+        //////////            }
+        //////////        }
+            
+        //////////}
 
     }
 
 
-    //function clickRow() {
-    //    var checked = this.checked,
-    //        row = $(this).closest("tr"),
-    //        grid = $("#gridPaymentTransaction").data("kendoGrid"),
-    //        dataItem = grid.dataItem(row);
-    //    console.log('click row', dataItem)
-    //}
-
     function gridImport(dataSource) {
+
+        console.log('dataSource >>> ', dataSource)
+
         $("#gridPaymentTransaction").kendoGrid({
             dataSource: dataSource,
             toolbar: ["excel"],
@@ -731,12 +898,12 @@
                 //},
 
                 {
-                    //selectable: true,
+                    selectable: true,
                     headerTemplate: "<input type='checkbox' id='header-chb' class='header-checkbox' style=' -webkit-transform: scale(2);'>",
                     template: function (dataItem) {
                         var input = ''
                         if (dataItem.ActImp) {
-                            input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
+                            input = "<input type='checkbox' id='" + dataItem.uid + "'  class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "' ></label>"
                             //input = "<input type='checkbox' id='" + dataItem.uid + "' class='row-checkbox' style=' -webkit-transform: scale(2);'>"
                         } else {
                             input = ''
@@ -744,7 +911,12 @@
 
                         return input;
                     },
-                    width: 40
+
+
+                    
+                //////    //template: "<div style=\"text-align:center;\"><input class =\"Chk\" type=\"checkbox\" data-id=\"'#:TF_Id#'\" onclick=\"toggleClick('#:TF_Id#')\"></input></div>",
+                //////    //headerTemplate: '<input type="checkbox" id="ChkAll" onclick="toggleAll()" /> All',
+                //////    //width: 40
                 },
 
                 {
@@ -973,371 +1145,42 @@
         });
 
         var grid = $("#gridPaymentTransaction").data("kendoGrid");
-        grid.thead.on("click", "#header-chb", onClickAll);
+        grid.thead.on("click", "#header-chb", onDataBound);
     }
 
+    function onClickAll(e) {
+        var grid = $("#gridPaymentTransaction").data("kendoGrid");
+        var dataSource = $("#gridPaymentTransaction").data("kendoGrid").dataSource;
+        var filters = dataSource.filter();
+        var allData = dataSource.data();
+        var query = new kendo.data.Query(allData);
+        var data = query.filter(filters).data; 
 
-    /**
-    function gridImport(dataSource) {
-        $("#gridPaymentTransaction").kendoGrid({
-            dataSource: dataSource,
-            toolbar: ["excel"],
-            excel: {
-                allPages: true
-            },
-            excelExport: function (e) {
-                var rows = e.workbook.sheets[0].rows;
+        console.log($(e.target), $(e.target).is(':checked'))
+        console.log(data.length, allData.length, data.length == allData.length)
+        ////if ($(e.target).is(':checked')) {
+        ////    // check in
+        ////    console.log('check in')
+        ////    if (data.length == allData.length) {
+        ////        //no filter
+        ////        console.log('ไม่มี filter อะไร all เลย')
+        ////        $.each(allData, function (k, v) {
+        ////            if (v.ActImp) {
+        ////                var currentRow = grid.table.find("tr[data-uid='" + v.uid + "']");
+        ////                var Chk = $(currentRow).find(".k-checkbox");
+        ////                Chk.prop('checked', true);
+        ////            }
+        ////        });
 
-                for (var ri = 0; ri < rows.length; ri++) {
-                    var row = rows[ri];
-
-                    if (row.type == "group-footer" || row.type == "footer") {
-                        for (var ci = 0; ci < row.cells.length; ci++) {
-                            var cell = row.cells[ci];
-                            if (cell.value) {
-                                // Use jQuery.fn.text to remove the HTML and get only the text
-                                cell.value = $(cell.value).text();
-                                // Set the alignment
-                                cell.hAlign = "right";
-                            }
-                        }
-                    }
-                }
-            },
-            dataBound: onDataBound,
-            columns: [
-
-                {
-                    title: 'Select All',
-                    headerTemplate: "<input type='checkbox' id='header-chb' class='k-checkbox header-checkbox'><label class='k-checkbox-label' for='header-chb'></label>",
-                    template: function (dataItem) {
-                        dataItem.selected = (dataItem.selected == undefined) ? "N" : dataItem.selected
-                        // // console.log('dataItem : ', dataItem.selected, 'dataItemAll : ', dataItemAll)
-                        var input = ''
-                        if (dataItem.ActImp) {
-                            if ($('#header-chb').val() == "A" || dataItem.selected == "S") {
-                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' checked><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
-                            } else if ($('#header-chb').val() == "U") {
-                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
-                            } else if ((dataItem.selected == "N" || dataItem.selected == "A" || dataItem.selected == "S") && dataItemAll == 'Y') {
-                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' checked><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
-                            } else {
-                                input = "<input type='checkbox' id='" + dataItem.uid + "' class='k-checkbox row-checkbox' ><label class='k-checkbox-label' for='" + dataItem.uid + "'></label>"
-                            }
-
-                        } else {
-                            input = ''
-                        }
-
-                        return input;
-                    },
-                    width: 40
-                },
-
-                {
-                    title: "ลำดับที่",
-                    template: "#= ++record #",
-                    width: 60,
-                    sortable: false
-                },
-                {
-                    field: "FundCode",
-                    title: "รหัสกองทุน",
-                    filterable: {
-                        cell: {
-                            operator: "contains",
-                            template: customSearch,
-                            showOperators: false
-                        }
-                    },
-                    template: '<div style:"text-align:left" > #= (SubFundCode != null ) ? Fund_Code + " : " + SubFundCode : FundCode # </div>',
-                    //template: (function (dataItem) {
-                    //    var Fund_Code = "";
-                    //    var Sub_Fund_Code = "";
-                    //    var full_Fund_Code = "";
-                    //    Fund_Code = dataItem.FundCode;
-                    //    if (dataItem.SubFundCode != null) {
-                    //        full_Fund_Code = Fund_Code + " : " + dataItem.SubFundCode
-                    //    } else {
-                    //        full_Fund_Code = Fund_Code
-                    //    }
-                    //    return "<div style='text-align:left'>" + full_Fund_Code + "</div>";
-                    //}),
-                    width: 150
-                },
-
-                {
-                    title: "รหัสผู้รับเงิน",
-                    columns: [{
-                        field: "Payee_Source",
-                        title: "Source",
-                        width: 150,
-                        filterable: false,
-                        filterable: {
-                            cell: {
-                                operator: "contains",
-                                template: customSearch,
-                                showOperators: false
-                            }
-                        },
-
-                    }, {
-                        field: "Payee_ETS",
-                        title: "ETS",
-                        width: 150,
-                        filterable: {
-                            cell: {
-                                operator: "contains",
-                                template: customSearch,
-                                showOperators: false
-                            }
-                        },
-                    }]
-                },
-                {
-                    title: "รหัสประจำตัวค่าใช้จ่าย",
-                    columns: [
-                        {
-                            field: "Exp_Code_ETS",
-                            title: "ETS",
-                            width: 100,
-                            filterable: {
-                                cell: {
-                                    operator: "contains",
-                                    template: customSearch,
-                                    showOperators: false
-                                }
-                            }
-                        },
-                        {
-                            field: "Exp_Code_Source",
-                            title: "Source",
-                            width: 150,
-                            filterable: {
-                                cell: {
-                                    operator: "contains",
-                                    template: customSearch,
-                                    showOperators: false
-                                }
-                            }
-                        },
-                    ]
-                },
-                {
-                    field: "TradeDate", title: "วันที่จัดทำคำสั่ง",
-                    width: 120,
-                    template: '#= (TradeDate != null ) ? kendo.toString(kendo.parseDate(TradeDate), "dd/MM/yyyy") : "" #',
-                    filterable: false,
-                    footerTemplate: "<span style='float:right'> Total: </span>"
-                },
-                {
-                    field: "GrossAmt", title: "จำนวนเงิน",
-                    template: "<span style='float:right'>#=kendo.toString(GrossAmt, 'n')  #</span>",
-                    width: 120,
-                    aggregates: ["sum"],
-                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
-                    filterable: false
-                },
-                {
-                    field: "VatAmt",
-                    title: "ภาษีมูลค่าเพิ่ม",
-                    template: "<span style='float:right'>#=kendo.toString(VatAmt, 'n')  #</span>",
-                    width: 120,
-                    aggregates: ["sum"],
-                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
-                    filterable: false
-                },
-                {
-                    field: "TotalAmt",
-                    title: "จำนวนเงินรวมภาษีมูลค่าเพิ่ม",
-                    template: "<span style='float:right'>#=kendo.toString(TotalAmt, 'n')  #</span>",
-                    width: 120,
-                    aggregates: ["sum"],
-                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
-                    filterable: false
-                },
-                {
-                    field: "WTAmt",
-                    title: "จำนวนเงินภาษีเงินได้หัก ณ ที่จ่าย",
-                    template: "<span style='float:right'>#=kendo.toString(WTAmt, 'n')  #</span>",
-                    width: 120,
-                    aggregates: ["sum"],
-                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
-                    filterable: false
-                },
-                {
-                    field: "SettleAmt", title: "จำนวนเงินจ่ายสุทธิ",
-                    template: "<span style='float:right'>#=kendo.toString(SettleAmt, 'n')  #</span>",
-                    //template: (function (dataItem) {
-                    //    var settle_amt = "";
-                    //    if (dataItem.SettleAmt != null) {
-                    //        settle_amt = kendo.toString(dataItem.SettleAmt, 'n')
-                    //    } else {
-                    //        settle_amt = ""
-                    //    }
-                    //    return "<div style='text-align:right'>" + settle_amt + "</div>";
-                    //}),
-                    width: 120,
-                    aggregates: ["sum"],
-                    footerTemplate: "<span style='float:right'>#=kendo.toString(sum, 'n')  #</span>",
-                    filterable: false
-                },
-
-                {
-                    field: "SettleDate", title: "วันที่สั่งจ่ายเงิน",
-                    width: 120,
-                    template: '#= (SettleDate != null ) ? kendo.toString(kendo.parseDate(SettleDate), "dd/MM/yyyy") : "" #',
-                    filterable: false
-                },
-                {
-                    title: "วิธีการจ่ายเงิน",
-                    field: "PYM_Method",
-                    width: 130,
-                    filterable: false
-                },
-                {
-                    field: "Exp_Desc_En_ETS",
-                    title: "ชื่อค่าใช้จ่ายภาษาอังกฤษ",
-                    width: 300,
-                    filterable: {
-                        cell: {
-                            operator: "contains",
-                            template: customSearch,
-                            showOperators: false
-                        }
-                    }
-                },
-                {
-                    title: "ข้อมูลบัญชีเงินฝากธนาคารผู้จ่ายเงิน",
-                    columns: [{
-                        field: "PYM_Fund_Bank",
-                        title: "ธนาคาร",
-                        width: 100,
-                        filterable: false
-                    },
-                    {
-                        field: "PYM_Fund_AccType",
-                        title: "ประเภทบัญชี",
-                        width: 100,
-                        filterable: false
-                    }, {
-                        title: "เลขที่บัญชี",
-                        field: "PYM_Fund_AccNo",
-                        width: 120,
-                        filterable: false
-                    }]
-                },
-                {
-                    field: "TF_ImpStatus", title: "สถานะ", width: 120,
-                    filterable: false
-                },
-                {
-                    title: "ข้อมูลบัญชีเงินฝากธนาคาร",
-                    columns: [{
-                        field: "Payee_AccBank",
-                        title: "ธนาคาร",
-                        width: 100,
-                        filterable: false
-                    },
-                    {
-                        field: "Payee_AccBankBranch",
-                        title: "สาขา",
-                        width: 100,
-                        filterable: false
-                    },
-                    {
-                        field: "Payee_AccType",
-                        title: "ประเภทบัญชี",
-                        width: 100,
-                        filterable: false
-                    },
-                    {
-                        title: "เลขที่บัญชี",
-                        field: "Payee_AccNo",
-                        width: 120,
-                        filterable: false
-                    }]
-                }
-            ],
-            dataBinding: function () {
-                //set record continue
-                record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
-            },
-            scrollable: false,
-            noRecords: {
-                template: "No data available please search again"
-            },
-            filterable: {
-                mode: "row"
-            },
-            pageable: {
-                numeric: true,
-                //  pageSizes: [100, 250, 500],
-                previousNext: true,
-                input: false,
-                refresh: true
-            },
-            page: function (e) {
-                // console.log(e);
-            },
-            persistSelection: true,
-            pageSize: oldPageSize,
-        });
-    }
-
-    */
-    function onDataBound(e) {
-        // console.log('sliderCreated ' ,sliderCreated);
-        if (!sliderCreated) {
-            $($($(".k-grid-pager").children())[7]).remove()
-            $(".k-grid-pager").append($("<input id='pageSizeNumber' class='pageSizeNumber' style='width:5%' />"));
-            $("#pageSizeNumber").kendoNumericTextBox({
-                format: "n0",
-                decimals: 1,
-                min: 1,
-                change: function () {
-                    var value = this.value();
-                    if (this.value() != null) {
-                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(value));
-                    } else {
-                        $("#gridPaymentTransaction").data('kendoGrid').dataSource.pageSize(parseInt(30));
-                    }
-
-                    $("#gridPaymentTransaction").data('kendoGrid').refresh();
-                    // console.log(value); //value is the selected date in the numerictextbox
-                }
-            });
-            $('#pageSizeNumber').data('kendoNumericTextBox').value($("#gridPaymentTransaction").data('kendoGrid').dataSource.view().length)
-        }
-
-
-        var allData = e.sender.dataSource.data();
+        ////    } else {
+        ////        console.log(' filter อยู่นะ')
+        ////    }
+        ////} else {
+        ////    // check out
+        ////    console.log('check out')
+        ////}
        
-        $.each(allData, function (k, v) {
-            var grid = $("#gridPaymentTransaction").data("kendoGrid");
-            var dataItem = allData[k]
-            
-
-            if (ClickAll == "Y") {
-                var row = this;
-                if (dataItem.ActImp == true) {
-                    console.log('ActImp >> ', dataItem.ActImp);                
-                   var currentRow = grid.table.find("tr[data-uid='" + dataItem.uid + "']");
-                   grid.select(currentRow);
-                    var Chk = $(currentRow).find(".k-checkbox");
-                    Chk.prop('checked', true);
-
-
-                } else {
-                    var currentRow = grid.table.find("tr[data-uid='" + dataItem.uid + "']");
-                    var Chk = $(currentRow).find(".k-checkbox");
-                    Chk.next().attr('style', "display:none;");
-                }
-            }
-
-        });
-
-    };
+    }
 
 
     function gridExport(dataSource) {
@@ -1385,18 +1228,7 @@
                         }
                     },
                     template: '<div style:"text-align:left" > #= (SubFundCode != null ) ? Fund_Code + " : " + SubFundCode : FundCode # </div>',
-                    //template: (function (dataItem) {
-                    //    var Fund_Code = "";
-                    //    var Sub_Fund_Code = "";
-                    //    var full_Fund_Code = "";
-                    //    Fund_Code = dataItem.FundCode;
-                    //    if (dataItem.SubFundCode != null) {
-                    //        full_Fund_Code = Fund_Code + " : " + dataItem.SubFundCode
-                    //    } else {
-                    //        full_Fund_Code = Fund_Code
-                    //    }
-                    //    return "<div style='text-align:left'>" + full_Fund_Code + "</div>";
-                    //}),
+           
                     width: 150,
                     //lockable: true,
                     //locked: true
